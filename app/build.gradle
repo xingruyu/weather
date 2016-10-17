@@ -1,0 +1,32 @@
+apply plugin: 'com.android.application'
+apply plugin: 'android-apt'   //butterknife注解库
+
+android {
+    compileSdkVersion 24          // Android SDK编译版本，只是在编译的时候使用
+    buildToolsVersion "24.0.3"    //与compileSdkVersion的大版本保持一致
+
+    defaultConfig {
+        applicationId "com.xingruyu.weather"
+        minSdkVersion 14     //必需大于等于库的 minSdkVersion
+        targetSdkVersion 22
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    compile 'com.android.support:appcompat-v7:24.2.1'
+    compile 'com.jakewharton:butterknife:8.4.0'        //butterknife注解库，可结合AS插件ButterKnife Zelezny一起使用
+    apt 'com.jakewharton:butterknife-compiler:8.4.0'   //butterknife注解库
+    testCompile 'junit:junit:4.12'
+}
