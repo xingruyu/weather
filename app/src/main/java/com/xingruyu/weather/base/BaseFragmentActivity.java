@@ -1,5 +1,6 @@
 package com.xingruyu.weather.base;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
@@ -17,15 +18,16 @@ public class BaseFragmentActivity extends FragmentActivity {
 
     public ProgressDialog progressDialog;
     public Context mContext;  // 上下文实例
+    public Activity mActivity;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        mContext = getApplicationContext();
         // 添加Activity到堆栈
         AppManager.getAppManager().addActivity(this);
 
+        mContext = getApplicationContext();
+        mActivity = this;
         progressDialog = new ProgressDialog(this);
         progressDialog.setCancelable(false);
     }
