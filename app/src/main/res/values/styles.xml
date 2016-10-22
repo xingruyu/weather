@@ -1,9 +1,8 @@
 <resources>
 
-    <!-- Base application theme. -->
+    <!-- Base application theme.-->
     <style name="AppTheme.Base" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-
         <!--主色-->
         <item name="colorPrimary">@color/colorPrimary</item>
         <!--深色主色-->
@@ -12,8 +11,8 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <!--4.4以下会加载该主题-->
     <style name="AppTheme" parent="AppTheme.Base">
-
     </style>
 
 

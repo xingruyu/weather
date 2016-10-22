@@ -6,8 +6,9 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
+import android.widget.Toast;
 
-import com.xingruyu.weather.utils.AppManager;
+import com.xingruyu.weather.utils.AppManagerUtils;
 
 /**
  * 所有Activity的基类
@@ -24,11 +25,21 @@ public class BaseFragmentActivity extends FragmentActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // 添加Activity到堆栈
-        AppManager.getAppManager().addActivity(this);
+        AppManagerUtils.getAppManager().addActivity(this);
 
         mContext = getApplicationContext();
         mActivity = this;
         progressDialog = new ProgressDialog(this);
         progressDialog.setCancelable(false);
+    }
+
+
+
+    protected void toastShowShot(String text){
+        Toast.makeText(mContext,text,Toast.LENGTH_SHORT).show();
+    }
+
+    protected void toastShowLong(String text){
+        Toast.makeText(mContext,text,Toast.LENGTH_LONG).show();
     }
 }

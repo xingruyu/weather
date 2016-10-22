@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <!--5.0及以上会加载该主题-->
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!--4.4-5.0之间会加载该主题-->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
     </style>
 </resources>

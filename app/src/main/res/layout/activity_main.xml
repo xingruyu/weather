@@ -1,107 +1,170 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/dl_details"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
 
     <!--主界面-->
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent">-->
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <RelativeLayout
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:paddingBottom="@dimen/padding_small"
-                android:paddingTop="@dimen/padding_small"
-                android:paddingRight="@dimen/padding_big"
-                android:paddingLeft="@dimen/padding_big">
+                android:layout_height="match_parent">
 
-                <ImageView
-                    android:id="@+id/iv_menu"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_centerVertical="true"
-                    android:paddingRight="@dimen/padding_big"
-                    android:src="@mipmap/ic_menu"/>
+                <!--底部背景图片及动画层-->
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_centerHorizontal="true">
+                    <!--底部背景层-->
+                    <ImageView
+                        android:id="@+id/iv_background"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/bg_sand_storm"/>
+
+                    <!--顶部动画层-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+
+                    </LinearLayout>
+                </FrameLayout>
+
+                <!--顶部控件层-->
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:orientation="horizontal">
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:paddingRight="@dimen/padding_big"
+                        android:paddingLeft="@dimen/padding_big"
+                        android:paddingBottom="@dimen/padding_small"
+                        android:paddingTop="@dimen/padding_small"
+                        android:orientation="vertical">
 
-                        <TextView
-                            android:id="@+id/tv_city"
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="45dp">
+
+                            <ImageView
+                                android:id="@+id/iv_menu"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentLeft="true"
+                                android:layout_centerVertical="true"
+                                android:paddingRight="@dimen/padding_big"
+                                android:src="@drawable/selector_main_menu"/>
+
+                            <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_centerHorizontal="true"
+                                android:padding="2dp">
+
+                                <RelativeLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerHorizontal="true">
+
+                                    <TextView
+                                        android:id="@+id/tv_city"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:textSize="@dimen/textsize_big"
+                                        android:layout_centerVertical="true"
+                                        android:textColor="@color/white"
+                                        android:text="上海"/>
+
+                                    <ImageView
+                                        android:id="@+id/iv_location"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_toRightOf="@+id/tv_city"
+                                        android:layout_centerVertical="true"
+                                        android:layout_marginLeft="@dimen/margin_small"
+                                        android:src="@drawable/ic_bright_location"/>
+                                </RelativeLayout>
+
+                                <TextView
+                                    android:id="@+id/tv_refresh_time"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_alignParentBottom="true"
+                                    android:textSize="@dimen/textsize_10sp"
+                                    android:textColor="@color/white"
+                                    android:text="10分钟前"/>
+                            </RelativeLayout>
+
+                            <ImageView
+                                android:id="@+id/iv_share"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_centerVertical="true"
+                                android:paddingLeft="@dimen/padding_big"
+                                android:src="@drawable/selector_main_share"/>
+                        </RelativeLayout>
+
+                        <RelativeLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="@dimen/textsize_title"
-                            android:text="上海"/>
+                            android:orientation="horizontal"
+                            android:paddingTop="@dimen/padding_small"
+                            android:paddingBottom="@dimen/padding_small"
+                            android:layout_marginTop="@dimen/margin_big"
+                            android:layout_gravity="right">
 
-                        <ImageView
-                            android:id="@+id/iv_location"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_toRightOf="@+id/tv_city"
-                            android:src="@mipmap/ic_bright_location"/>
+                            <ImageView
+                                android:id="@+id/iv_pm5"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_centerVertical="true"
+                                android:src="@drawable/ic_pm25_01"/>
+
+                            <TextView
+                                android:id="@+id/tv_pm5"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="8dp"
+                                android:layout_toRightOf="@+id/iv_pm5"
+                                android:textSize="@dimen/textsize_small"
+                                android:textColor="@color/white"
+                                android:layout_centerVertical="true"
+                                android:gravity="center"
+                                android:text="119 轻度污染"/>
+                        </RelativeLayout>
                     </LinearLayout>
-
-                    <TextView
-                        android:id="@+id/tv_refresh_time"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:layout_alignParentBottom="true"
-                        android:textSize="@dimen/textsize_10sp"
-                        android:text="10分钟前"/>
-                </RelativeLayout>
-
-                <ImageView
-                    android:id="@+id/iv_share"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:paddingLeft="@dimen/padding_big"
-                    android:src="@mipmap/ic_share"/>
-            </RelativeLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"/>
-
-            </LinearLayout>
-
-        </LinearLayout>
-    </ScrollView>
+                </ScrollView>
+            </FrameLayout>
+    <!--</LinearLayout>-->
 
     <!--侧边栏-->
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <FrameLayout
+        android:layout_width="300dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start">
 
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:src="@drawable/bg_fine_day"/>
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="地块建设开发难度就开始"/>
 
-    </RelativeLayout>
+    </FrameLayout>
 
 </android.support.v4.widget.DrawerLayout>

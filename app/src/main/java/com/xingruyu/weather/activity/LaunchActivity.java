@@ -1,16 +1,16 @@
 package com.xingruyu.weather.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.view.Window;
-import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.ImageView;
 
 import com.xingruyu.weather.R;
 import com.xingruyu.weather.base.BaseFragmentActivity;
-import com.xingruyu.weather.utils.AppManager;
+import com.xingruyu.weather.utils.AppManagerUtils;
+import com.xingruyu.weather.utils.StatusBarUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -28,8 +28,7 @@ public class LaunchActivity extends BaseFragmentActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //全屏
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        StatusBarUtil.fullScreen(mActivity);
 
         setContentView(R.layout.activity_launch);
         initView();
@@ -37,10 +36,9 @@ public class LaunchActivity extends BaseFragmentActivity {
 
     private void initView(){
         ButterKnife.bind(this);
-        // 启动动画
+        // 启动透明度动画
         AlphaAnimation alphaAnimation = new AlphaAnimation(0.3f, 1.0f);
-        alphaAnimation.setDuration(2000);
-        mIv_Launch.startAnimation(alphaAnimation);
+        alphaAnimation.setDuration(1800);
         alphaAnimation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
@@ -49,13 +47,16 @@ public class LaunchActivity extends BaseFragmentActivity {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                AppManager.getAppManager().appExit(mContext);
+                startActivity(new Intent(mContext,MainActivity.class));
+                //在Activity切换时，载入淡出淡入的动画效果
+                overridePendingTransition(R.anim.set_startactivity,R.anim.set_finishactivity);
+                AppManagerUtils.getAppManager().appExit(mContext);
             }
 
             @Override
             public void onAnimationRepeat(Animation animation) {
-
             }
         });
+        mIv_Launch.startAnimation(alphaAnimation);
     }
 }

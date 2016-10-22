@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<set xmlns:android="http://schemas.android.com/apk/res/android">
+    <scale android:fromXScale="0.0"
+           android:toXScale="1.5"
+           android:fromYScale="0.0"
+           android:toYScale="1.5"
+           android:pivotX="50%"
+           android:pivotY="50%"
+           android:startOffset="0"
+           android:duration="500"
+           android:repeatCount="0"
+        />
+    <!--fromXScale缩放前x的缩放，0.0为不显示，1.0为正常大小
+        toXScale动画的最终缩放倍数，1.0位正常大小
+        pivotX动画的起始位置，相对于屏幕的百分比
+        startOffset动画多次执行的时间间隔
+        duration动画执行时间
+        repeatCount动画重复次数，动画总共会执行该数目+1次
+    -->
+</set>

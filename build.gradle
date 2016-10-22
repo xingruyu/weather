@@ -1,10 +1,13 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
+    //指定Android插件的仓库源
     repositories {
-        jcenter()
+        jcenter()  //依赖仓库源的别名，兼容maven的远程中央仓库
     }
+    //依赖
     dependencies {
+        //android gradle插件
         classpath 'com.android.tools.build:gradle:2.2.0'
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'   //butterknife注解库
 
@@ -13,6 +16,7 @@ buildscript {
     }
 }
 
+//指定整个projects中默认的仓库源，包括每个module。
 allprojects {
     repositories {
         jcenter()

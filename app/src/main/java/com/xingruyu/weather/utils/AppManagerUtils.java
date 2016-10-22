@@ -3,6 +3,8 @@ package com.xingruyu.weather.utils;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 
 import java.util.Stack;
 
@@ -11,20 +13,20 @@ import java.util.Stack;
  * Created by WDX on 2016/10/16.
  */
 
-public class AppManager {
+public class AppManagerUtils {
 
     private Stack<Activity> activityStack;
-    private static AppManager instance;
+    private static AppManagerUtils instance;
 
-    private AppManager() {
+    private AppManagerUtils() {
     }
 
     /**
      * 单一实例
      */
-    public static AppManager getAppManager() {
+    public static AppManagerUtils getAppManager() {
         if (instance == null) {
-            instance = new AppManager();
+            instance = new AppManagerUtils();
         }
         return instance;
     }
@@ -102,5 +104,27 @@ public class AppManager {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * 获取应用程序版本信息
+     * @param mContext
+     * @return 当前应用的版本name、code
+     */
+    public String[] getVersionInfo(Context mContext) {
+        try {
+            PackageManager packageManager = mContext.getPackageManager();
+            PackageInfo packageInfo = packageManager.getPackageInfo(mContext.getPackageName(), 0);
+            String[] versionInfo = new String[2];
+            if (packageInfo != null){
+                versionInfo[0] = packageInfo.versionName;
+                versionInfo[1] = packageInfo.versionCode + "";
+                return versionInfo;
+            }
+            return null;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

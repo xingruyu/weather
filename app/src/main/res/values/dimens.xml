@@ -3,15 +3,15 @@
     
     <dimen name="textsize_10sp">10sp</dimen>
     <dimen name="textsize_11sp">11sp</dimen>
-    <dimen name="textsize_12sp">12sp</dimen>
+    <dimen name="textsize_smaller">12sp</dimen>
     <dimen name="textsize_13sp">13sp</dimen>
-    <dimen name="textsize_14sp">14sp</dimen>
+    <dimen name="textsize_small">14sp</dimen>
     <dimen name="textsize_15sp">15sp</dimen>
     <dimen name="textsize_norm">16sp</dimen>
     <dimen name="textsize_17sp">17sp</dimen>
-    <dimen name="textsize_title">18sp</dimen>
+    <dimen name="textsize_big">18sp</dimen>
     <dimen name="textsize_19sp">19sp</dimen>
-    <dimen name="textsize_20sp">20sp</dimen>
+    <dimen name="textsize_bigger">20sp</dimen>
     <dimen name="textsize_21sp">21sp</dimen>
     <dimen name="textsize_22sp">22sp</dimen>
     <dimen name="textsize_23sp">23sp</dimen>
@@ -22,5 +22,9 @@
     <dimen name="padding_norm">8dp</dimen>
     <dimen name="padding_small">4dp</dimen>
     <dimen name="padding_big">12dp</dimen>
+
+    <dimen name="margin_norm">8dp</dimen>
+    <dimen name="margin_small">4dp</dimen>
+    <dimen name="margin_big">12dp</dimen>
 
 </resources>
