@@ -9,34 +9,41 @@ import android.view.View;
 import android.view.WindowManager;
 
 /**
+ * 屏幕工具类
  * Created by WDX on 2016/10/21.
  */
 
 public class ScreenUtils {
 
     /**
-     * 获得屏幕高度
-     *
+     * 在onCreate()即可强行获取View的尺寸(像素)
+     */
+    public static int[] forceGetViewSize(View view) {
+        int widthMeasureSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+        int heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+        view.measure(widthMeasureSpec, heightMeasureSpec);
+        return new int[]{view.getMeasuredWidth(), view.getMeasuredHeight()};
+    }
+
+    /**
+     * 获得屏幕高度(像素)
      * @param context
      * @return
      */
     public static int getScreenWidth(Context context) {
-        WindowManager wm = (WindowManager) context
-                .getSystemService(Context.WINDOW_SERVICE);
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         DisplayMetrics outMetrics = new DisplayMetrics();
         wm.getDefaultDisplay().getMetrics(outMetrics);
         return outMetrics.widthPixels;
     }
 
     /**
-     * 获得屏幕宽度
-     *
+     * 获得屏幕宽度(像素)
      * @param context
      * @return
      */
     public static int getScreenHeight(Context context) {
-        WindowManager wm = (WindowManager) context
-                .getSystemService(Context.WINDOW_SERVICE);
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         DisplayMetrics outMetrics = new DisplayMetrics();
         wm.getDefaultDisplay().getMetrics(outMetrics);
         return outMetrics.heightPixels;
@@ -44,7 +51,6 @@ public class ScreenUtils {
 
     /**
      * 获取当前屏幕截图，包含状态栏
-     *
      * @param activity
      * @return
      */
@@ -63,7 +69,6 @@ public class ScreenUtils {
 
     /**
      * 获取当前屏幕截图，不包含状态栏
-     *
      * @param activity
      * @return
      */
@@ -79,8 +84,7 @@ public class ScreenUtils {
         int width = getScreenWidth(activity);
         int height = getScreenHeight(activity);
         Bitmap bp = null;
-        bp = Bitmap.createBitmap(bmp, 0, statusBarHeight, width, height
-                - statusBarHeight);
+        bp = Bitmap.createBitmap(bmp, 0, statusBarHeight, width, height - statusBarHeight);
         view.destroyDrawingCache();
         return bp;
     }

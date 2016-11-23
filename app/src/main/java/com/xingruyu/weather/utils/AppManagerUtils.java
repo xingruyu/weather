@@ -6,6 +6,9 @@ import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 
+import com.umeng.analytics.MobclickAgent;
+
+import java.util.List;
 import java.util.Stack;
 
 /**
@@ -96,6 +99,7 @@ public class AppManagerUtils {
      */
     @SuppressWarnings("deprecation")       //编译时不显示使用了不赞成使用的类或方法时的警告
     public void appExit(Context context) {
+        MobclickAgent.onKillProcess(context);   //友盟统计
         try {
             finishAllActivity();
             ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
@@ -127,4 +131,27 @@ public class AppManagerUtils {
         }
         return null;
     }
+
+    /**
+     * 当前app是前台还是后台运行
+     * @param context
+     * @return true为后台
+     */
+    public static boolean isBackground(Context context) {
+        ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningAppProcessInfo> appProcesses = activityManager.getRunningAppProcesses();
+        for (ActivityManager.RunningAppProcessInfo appProcess : appProcesses) {
+            if (appProcess.processName.equals(context.getPackageName())) {
+                if (appProcess.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_BACKGROUND) {
+                    //后台
+                    return true;
+                }else{
+                    //前台
+                    return false;
+                }
+            }
+        }
+        return false;
+    }
+
 }

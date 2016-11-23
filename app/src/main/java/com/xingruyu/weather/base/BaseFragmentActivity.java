@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.widget.Toast;
 
+import com.umeng.analytics.MobclickAgent;
 import com.xingruyu.weather.utils.AppManagerUtils;
 
 /**
@@ -33,13 +34,23 @@ public class BaseFragmentActivity extends FragmentActivity {
         progressDialog.setCancelable(false);
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(mContext);  //友盟统计
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(mContext);  //友盟统计
+    }
 
-    protected void toastShowShot(String text){
+    protected void ToastShowShot(String text){
         Toast.makeText(mContext,text,Toast.LENGTH_SHORT).show();
     }
 
-    protected void toastShowLong(String text){
+    protected void ToastShowLong(String text){
         Toast.makeText(mContext,text,Toast.LENGTH_LONG).show();
     }
 }

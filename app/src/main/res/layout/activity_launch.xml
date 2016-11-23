@@ -1,13 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
     <ImageView
-        android:id="@+id/iv_launch"
+        android:id="@+id/launch_iv_launch"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="fitXY"
-        android:src="@drawable/launch"/>
+        android:src="@drawable/bg_launch"/>
 
-</LinearLayout>
+    <FrameLayout
+        android:id="@+id/launch_fl_welcome"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/launch_vp_welcome"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <Button
+            android:id="@+id/launch_btn_open"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center"
+            android:layout_marginBottom="50dp"
+            android:visibility="gone"
+            android:textSize="@dimen/textsize_norm"
+            android:textColor="@color/white"
+            android:background="@drawable/selector_launch_open"
+            android:text="点击进入"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="20dp">
+
+            <View
+                android:id="@+id/launch_view_page1"
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:layout_toLeftOf="@+id/launch_view_page2"
+                android:background="@drawable/shape_launch_pick_on"/>
+
+            <View
+                android:id="@+id/launch_view_page2"
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:layout_marginLeft="@dimen/margin_big"
+                android:layout_marginRight="@dimen/margin_big"
+                android:background="@drawable/shape_launch_pick_off"
+                android:layout_centerHorizontal="true"/>
+
+            <View
+                android:id="@+id/launch_view_page3"
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:layout_toRightOf="@+id/launch_view_page2"
+                android:background="@drawable/shape_launch_pick_off"/>
+
+        </RelativeLayout>
+    </FrameLayout>
+</RelativeLayout>

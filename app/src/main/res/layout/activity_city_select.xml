@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/city_select_iv_top"
+        android:layout_width="match_parent"
+        android:layout_height="190dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/bg_city_search"/>
+
+    <ImageView
+        android:id="@+id/city_select_iv_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_marginTop="@dimen/margin_big"
+        android:layout_marginLeft="@dimen/margin_big"
+        android:src="@drawable/ic_close"/>
+
+    <EditText
+        android:id="@+id/city_select_et_search"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:hint="输入要搜索的城市"
+        android:drawablePadding="@dimen/padding_norm"
+        android:textSize="@dimen/textsize_norm"
+        android:paddingLeft="@dimen/padding_norm"
+        android:layout_marginLeft="@dimen/margin_bigger"
+        android:layout_marginRight="@dimen/margin_bigger"
+        android:layout_marginBottom="30dp"
+        android:drawableLeft="@drawable/ic_search"
+        android:background="@drawable/shape_city_select_search"
+        android:layout_alignBottom="@+id/city_select_iv_top"/>
+
+    <ImageView
+        android:id="@+id/city_select_iv_clean"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/city_select_iv_top"
+        android:layout_marginBottom="34dp"
+        android:visibility="gone"
+        android:padding="@dimen/padding_small"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="25dp"
+        android:src="@drawable/ic_clean"/>
+
+    <TextView
+        android:id="@+id/city_select_tv_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="24dp"
+        android:textColor="@color/white"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="65dp"
+        android:text="四季有你，"/>
+
+    <TextView
+        android:id="@+id/city_select_tv_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="24dp"
+        android:textColor="@color/white"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="65dp"
+        android:layout_marginRight="65dp"
+        android:text="无惧风雨"/>
+
+    <ListView
+        android:id="@+id/city_select_lv_citylist"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:layout_below="@+id/city_select_ll_searching">
+    </ListView>
+
+    <TextView
+        android:id="@+id/city_select_tv_hint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/city_select_iv_top"
+        android:textSize="@dimen/textsize_big"
+        android:text="很遗憾未找到结果"
+        android:textColor="@color/gray"
+        android:layout_marginTop="50dp"/>
+
+    <LinearLayout
+        android:id="@+id/city_select_ll_searching"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:visibility="gone"
+        android:layout_below="@+id/city_select_iv_top"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="8dp"
+            android:layout_marginLeft="12dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_seaching"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textColor="@color/gray"
+            android:textSize="@dimen/textsize_small"
+            android:text="正在查询……"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/city_select_rl_hot_city"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/padding_big"
+        android:visibility="visible"
+        android:orientation="vertical"
+        android:layout_below="@+id/city_select_iv_top">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/gray"
+            android:textSize="@dimen/textsize_small"
+            android:layout_gravity="center"
+            android:text="热门城市"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_bigger">
+
+            <TextView
+                android:id="@+id/city_select_tv_location"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="30dp"
+                android:textSize="@dimen/textsize_norm"
+                android:gravity="center"
+                android:paddingLeft="24dp"
+                android:drawablePadding="-30dp"
+                android:drawableLeft="@drawable/ic_location_red"
+                android:background="@drawable/shape_city_select_hot"
+                android:text="定位"/>
+
+            <TextView
+                android:id="@+id/city_select_tv_beijing"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="30dp"
+                android:textSize="@dimen/textsize_norm"
+                android:layout_marginRight="@dimen/margin_bigger"
+                android:layout_marginLeft="@dimen/margin_bigger"
+                android:gravity="center"
+                android:background="@drawable/shape_city_select_hot"
+                android:text="北京市"/>
+
+            <TextView
+                android:id="@+id/city_select_tv_shanghai"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="30dp"
+                android:textSize="@dimen/textsize_norm"
+                android:gravity="center"
+                android:background="@drawable/shape_city_select_hot"
+                android:text="上海市"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_bigger">
+
+            <TextView
+                android:id="@+id/city_select_tv_tianjin"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="30dp"
+                android:textSize="@dimen/textsize_norm"
+                android:gravity="center"
+                android:background="@drawable/shape_city_select_hot"
+                android:text="天津市"/>
+
+            <TextView
+                android:id="@+id/city_select_tv_chongqing"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="30dp"
+                android:textSize="@dimen/textsize_norm"
+                android:layout_marginRight="@dimen/margin_bigger"
+                android:layout_marginLeft="@dimen/margin_bigger"
+                android:gravity="center"
+                android:background="@drawable/shape_city_select_hot"
+                android:text="重庆市"/>
+
+            <TextView
+                android:id="@+id/city_select_tv_shenzhen"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="30dp"
+                android:textSize="@dimen/textsize_norm"
+                android:gravity="center"
+                android:background="@drawable/shape_city_select_hot"
+                android:text="深圳市"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_bigger">
+
+            <TextView
+                android:id="@+id/city_select_tv_chengdu"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="30dp"
+                android:textSize="@dimen/textsize_norm"
+                android:gravity="center"
+                android:background="@drawable/shape_city_select_hot"
+                android:text="成都市"/>
+
+            <TextView
+                android:id="@+id/city_select_tv_guangzhou"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="30dp"
+                android:textSize="@dimen/textsize_norm"
+                android:layout_marginRight="@dimen/margin_bigger"
+                android:layout_marginLeft="@dimen/margin_bigger"
+                android:gravity="center"
+                android:background="@drawable/shape_city_select_hot"
+                android:text="广州市"/>
+
+            <TextView
+                android:id="@+id/city_select_tv_hangzhou"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="30dp"
+                android:textSize="@dimen/textsize_norm"
+                android:gravity="center"
+                android:background="@drawable/shape_city_select_hot"
+                android:text="杭州市"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_bigger">
+
+            <TextView
+                android:id="@+id/city_select_tv_zhengzhou"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="30dp"
+                android:textSize="@dimen/textsize_norm"
+                android:gravity="center"
+                android:background="@drawable/shape_city_select_hot"
+                android:text="郑州市"/>
+
+            <TextView
+                android:id="@+id/city_select_tv_nanjing"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="30dp"
+                android:textSize="@dimen/textsize_norm"
+                android:layout_marginRight="@dimen/margin_bigger"
+                android:layout_marginLeft="@dimen/margin_bigger"
+                android:gravity="center"
+                android:background="@drawable/shape_city_select_hot"
+                android:text="南京市"/>
+
+            <TextView
+                android:id="@+id/city_select_tv_xian"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="30dp"
+                android:textSize="@dimen/textsize_norm"
+                android:gravity="center"
+                android:background="@drawable/shape_city_select_hot"
+                android:text="西安市"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_bigger">
+
+            <TextView
+                android:id="@+id/city_select_tv_wuhan"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="30dp"
+                android:textSize="@dimen/textsize_norm"
+                android:gravity="center"
+                android:background="@drawable/shape_city_select_hot"
+                android:text="武汉市"/>
+
+            <TextView
+                android:id="@+id/city_select_tv_suzhou"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="30dp"
+                android:textSize="@dimen/textsize_norm"
+                android:layout_marginRight="@dimen/margin_bigger"
+                android:layout_marginLeft="@dimen/margin_bigger"
+                android:gravity="center"
+                android:background="@drawable/shape_city_select_hot"
+                android:text="苏州市"/>
+
+            <TextView
+                android:id="@+id/city_select_tv_dalian"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="30dp"
+                android:textSize="@dimen/textsize_norm"
+                android:gravity="center"
+                android:background="@drawable/shape_city_select_hot"
+                android:text="大连市"/>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/darkgray"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/margin_bigger"
+            android:layout_marginBottom="@dimen/margin_bigger"
+            android:textSize="@dimen/textsize_small"
+            android:text="最多只能添加9个城市"/>
+    </LinearLayout>
+</RelativeLayout>

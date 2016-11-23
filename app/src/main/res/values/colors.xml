@@ -4,6 +4,11 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
+    <color name="translucence">#80000000</color><!--主界面的透明度-->
+    <color name="translucence_dark">#c0000000</color><!--深透明-->
+    <color name="translucence_shallow">#40000000</color><!--浅透明-->
+    <color name="translucence_totle">#00000000</color><!--完全透明-->
+
     <!--网上收集的颜色-->
     <color name="white">#ffffff</color> <!-- 白色 -->
     <color name="ivory">#fffff0</color> <!-- 象牙色 -->
@@ -66,7 +71,6 @@
     <color name="orchid">#da70d6</color> <!-- 淡紫色 -->
     <color name="thistle">#d8bfd8</color> <!-- 蓟色 -->
     <color name="lightgray">#d3d3d3</color> <!-- 亮灰色 -->
-    <color name="lightgrey">#d3d3d3</color> <!-- 亮灰色 -->
     <color name="tan">#d2b48c</color> <!-- 茶色 -->
     <color name="chocolate">#d2691e</color> <!-- 巧可力色 -->
     <color name="peru">#cd853f</color> <!-- 秘鲁色 -->
@@ -84,7 +88,6 @@
     <color name="greenyellow">#adff2f</color> <!-- 黄绿色 -->
     <color name="lightblue">#add8e6</color> <!-- 亮蓝色 -->
     <color name="darkgray">#a9a9a9</color> <!-- 暗灰色 -->
-    <color name="darkgrey">#a9a9a9</color> <!-- 暗灰色 -->
     <color name="brown">#a52a2a</color> <!-- 褐色 -->
     <color name="sienna">#a0522d</color> <!-- 赭色 -->
     <color name="darkorchid">#9932cc</color> <!-- 暗紫色 -->
@@ -100,7 +103,6 @@
     <color name="lightskyblue">#87cefa</color> <!-- 亮天蓝色 -->
     <color name="skyblue">#87ceeb</color> <!-- 天蓝色 -->
     <color name="gray">#808080</color> <!-- 灰色 -->
-    <color name="grey">#808080</color> <!-- 灰色 -->
     <color name="olive">#808000</color> <!-- 橄榄色 -->
     <color name="purple">#800080</color> <!-- 紫色 -->
     <color name="maroon">#800000</color> <!-- 粟色 -->

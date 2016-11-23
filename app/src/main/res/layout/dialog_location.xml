@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@color/lightgray"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/dialog_locating"
+        android:layout_marginTop="@dimen/margin_big"
+        android:layout_gravity="center"/>
+
+    <TextView
+        android:id="@+id/tv_dialog_location_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/textsize_norm"
+        android:layout_marginTop="@dimen/margin_big"
+        android:layout_marginBottom="@dimen/margin_big"
+        android:layout_gravity="center"
+        android:text="正在定位……"/>
+
+    <Button
+        android:id="@+id/btn_dialog_location_cancel"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:textSize="@dimen/textsize_bigger"
+        android:text="取消"/>
+
+</LinearLayout>
