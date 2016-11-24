@@ -96,7 +96,7 @@ public class CitySelectActivity extends BaseFragmentActivity {
 
     /**
      * 注意事项：1、根据定位结果查询城市信息前，先判断定位结果是否为空。
-     * 2、首次使用、城市列表中没有定位城市时，显示定位对话框；城市列表中有定位城市时，不显示定位对话框且定位text不可点击
+     * 2、首次使用没有定位城市，显示定位对话框；城市列表中有定位城市时，不显示定位对话框且定位text不可点击
      * 3、如果在此界面选择了城市，则在关闭Activity之前去获取天气，在进入主界面根据广播接收器更新界面
      */
     private Dialog dialog;
@@ -134,19 +134,16 @@ public class CitySelectActivity extends BaseFragmentActivity {
             dialog = new Dialog(CitySelectActivity.this);
             View view = getLayoutInflater().inflate(R.layout.dialog_location, null);
             tv_dialog_location_message = (TextView) view.findViewById(R.id.tv_dialog_location_message);
-//            btn_dialog_location_cancel = (Button) view.findViewById(R.id.btn_dialog_location_cancel);
-//            btn_dialog_location_cancel.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    dialog.cancel();
-//                }
-//            });
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.setContentView(view);
             dialog.setCancelable(false);
             dialog.setCanceledOnTouchOutside(false);
-            dialog.show();
-            if (MyLocationListener.locationState != null) {   //定位已经返回
+            if (!getIntent().getBooleanExtra("formMainActivity", false)) {
+                //从启动页打开时显示对话框
+                dialog.show();
+            }
+            if (MyLocationListener.locationState != null) {
+                //定位已经返回
                 getLocationInfo();
             }
         } else {   //城市列表中有定位城市

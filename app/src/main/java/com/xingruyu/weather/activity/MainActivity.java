@@ -12,7 +12,6 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.util.TypedValue;
 import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -44,6 +43,7 @@ import com.xingruyu.weather.config.Constants;
 import com.xingruyu.weather.db.DBManager;
 import com.xingruyu.weather.http.GetCityWeather;
 import com.xingruyu.weather.utils.DensityUtils;
+import com.xingruyu.weather.utils.MainAssistUtils;
 import com.xingruyu.weather.utils.NetUtils;
 import com.xingruyu.weather.utils.ScreenUtils;
 import com.xingruyu.weather.utils.SharedPreferanceUtils;
@@ -51,12 +51,10 @@ import com.xingruyu.weather.utils.StatusBarUtil;
 import com.xingruyu.weather.view.CircleImageView;
 import com.xingruyu.weather.view.ObserveScrollView;
 import com.xingruyu.weather.view.SunriseSunsetView;
-import com.xingruyu.weather.view.TendencyLineView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -177,7 +175,7 @@ public class MainActivity extends BaseFragmentActivity implements SwipeRefreshLa
     @BindView(R.id.main_tv_secondday_n_tem)
     TextView tvSeconddayNTem;
     @BindView(R.id.main_rl_secondday_tendency)
-    RelativeLayout rlSeconddayTendency;
+    public RelativeLayout rlSeconddayTendency;
     @BindView(R.id.main_iv_tendency_secondday_n_describe)
     ImageView ivTendencySeconddayNDescribe;
     @BindView(R.id.main_tv_tendency_secondday_n_describe)
@@ -203,7 +201,7 @@ public class MainActivity extends BaseFragmentActivity implements SwipeRefreshLa
     @BindView(R.id.main_tv_thirdday_n_tem)
     TextView tvThirddayNTem;
     @BindView(R.id.main_rl_thirdday_tendency)
-    RelativeLayout rlThirddayTendency;
+    public RelativeLayout rlThirddayTendency;
     @BindView(R.id.main_iv_tendency_thirdday_n_describe)
     ImageView ivTendencyThirddayNDescribe;
     @BindView(R.id.main_tv_tendency_thirdday_n_describe)
@@ -229,7 +227,7 @@ public class MainActivity extends BaseFragmentActivity implements SwipeRefreshLa
     @BindView(R.id.main_tv_fourthday_n_tem)
     TextView tvFourthdayNTem;
     @BindView(R.id.main_rl_fourthday_tendency)
-    RelativeLayout rlFourthdayTendency;
+    public RelativeLayout rlFourthdayTendency;
     @BindView(R.id.main_iv_tendency_fourthday_n_describe)
     ImageView ivTendencyFourthdayNDescribe;
     @BindView(R.id.main_tv_tendency_fourthday_n_describe)
@@ -255,7 +253,7 @@ public class MainActivity extends BaseFragmentActivity implements SwipeRefreshLa
     @BindView(R.id.main_tv_fifthday_n_tem)
     TextView tvFifthdayNTem;
     @BindView(R.id.main_rl_fifthday_tendency)
-    RelativeLayout rlFifthdayTendency;
+    public RelativeLayout rlFifthdayTendency;
     @BindView(R.id.main_iv_tendency_fifthday_n_describe)
     ImageView ivTendencyFifthdayNDescribe;
     @BindView(R.id.main_tv_tendency_fifthday_n_describe)
@@ -281,7 +279,7 @@ public class MainActivity extends BaseFragmentActivity implements SwipeRefreshLa
     @BindView(R.id.main_tv_sixthday_n_tem)
     TextView tvSixthdayNTem;
     @BindView(R.id.main_rl_sixthday_tendency)
-    RelativeLayout rlSixthdayTendency;
+    public RelativeLayout rlSixthdayTendency;
     @BindView(R.id.main_iv_tendency_sixthday_n_describe)
     ImageView ivTendencySixthdayNDescribe;
     @BindView(R.id.main_tv_tendency_sixthday_n_describe)
@@ -347,7 +345,7 @@ public class MainActivity extends BaseFragmentActivity implements SwipeRefreshLa
     @BindView(R.id.main_view_bottom_background)
     View viewBottomBackground;
     @BindView(R.id.main_iv_background)
-    ImageView ivBackground;
+    public ImageView ivBackground;
     @BindView(R.id.main_rl_top_city)
     RelativeLayout rlTopCity;
     @BindView(R.id.main_iv_top_describe_hide)
@@ -363,11 +361,11 @@ public class MainActivity extends BaseFragmentActivity implements SwipeRefreshLa
     @BindView(R.id.main_srl_update)
     SwipeRefreshLayout mainSrlUpdate;
     @BindView(R.id.main_ll_forecast_weather)
-    FrameLayout mainLlForecastWeather;
+    public FrameLayout mainLlForecastWeather;
     @BindView(R.id.main_lv_forecast_weather)
     ListView mainLvForecastWeather;
     @BindView(R.id.main_rl_firstday_tendency)
-    RelativeLayout mainRlFirstdayTendency;
+    public RelativeLayout mainRlFirstdayTendency;
     @BindView(R.id.main_ll_top)
     LinearLayout mainLlTop;
     @BindView(R.id.main_rl_animator)
@@ -398,8 +396,8 @@ public class MainActivity extends BaseFragmentActivity implements SwipeRefreshLa
     private ForecastWeatherAdapter forecastWeatherAdapter;   //主界面未来天气适配器
     private List<ForecastWeather> forecastWeatherList;   //未来6天的天气
     private CityWeather cityWeather;       //当前天气
-    private View[] TemLines = new View[10];   //趋势图中温度点间的连线
 
+    View[] TemLines = new View[10];   //趋势图中温度点间的连线
     private boolean mSunAnim = true;       //是否重新播放太阳升起落下动画
 //    private boolean isUpdate = false;  //是否为更新数据
     private boolean dayOrNight = true;     //当前时间是白天还是夜晚，true为白天
@@ -416,8 +414,7 @@ public class MainActivity extends BaseFragmentActivity implements SwipeRefreshLa
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        StatusBarUtil.setTranslucentForDrawerLayout(this, (DrawerLayout) findViewById(R.id.main_dl_details)
-                , 0);
+        StatusBarUtil.setTranslucentForDrawerLayout(this,(DrawerLayout) findViewById(R.id.main_dl_details),0);
         ButterKnife.bind(this);
         initView();
     }
@@ -498,7 +495,7 @@ public class MainActivity extends BaseFragmentActivity implements SwipeRefreshLa
                         });
                         rlTopCity.setAnimation(animation_rlTopCity);
                         rlTopCity.setVisibility(View.GONE);
-                        selectWeatherPic(cityWeather.gettxt(), dayOrNight, true, true);  //切换背景为模糊效果
+                        MainAssistUtils.getMainAssistUtils().selectWeatherPic(cityWeather.gettxt(), dayOrNight, true, true);  //切换背景为模糊效果
                     }
                     //防止播放动画造成显示错乱
                     if (y > MyApplication.screenHeight * 19 / 20) {
@@ -531,7 +528,7 @@ public class MainActivity extends BaseFragmentActivity implements SwipeRefreshLa
                         });
                         llTopCityHide.setAnimation(animation_llTopCityHide);
                         llTopCityHide.setVisibility(View.GONE);
-                        selectWeatherPic(cityWeather.gettxt(), dayOrNight, false, true);  //切换背景为清晰效果
+                        MainAssistUtils.getMainAssistUtils().selectWeatherPic(cityWeather.gettxt(), dayOrNight, false, true);  //切换背景为清晰效果
                     }
                     //防止播放动画造成显示错乱
                     if (y < MyApplication.screenHeight * 1 / 20) {
@@ -621,13 +618,13 @@ public class MainActivity extends BaseFragmentActivity implements SwipeRefreshLa
         } else {
             ivLocation.setVisibility(View.GONE);
         }
-        ivTopDescribeHide.setImageResource(selectWeatherPic(cityWeather.gettxt(), dayOrNight, false, false));
+        ivTopDescribeHide.setImageResource(MainAssistUtils.getMainAssistUtils().selectWeatherPic(cityWeather.gettxt(), dayOrNight, false, false));
         tvTopTemperatureHide.setText(cityWeather.gettmp() + "℃");
-        ivPm5.setImageResource(selectWeatherPic(cityWeather.getQlty(), dayOrNight, false, false));
+        ivPm5.setImageResource(MainAssistUtils.getMainAssistUtils().selectWeatherPic(cityWeather.getQlty(), dayOrNight, false, false));
         tvPm5.setText(cityWeather.getAqi() + " " + cityWeather.getQlty());
         tvTemperature.setText(cityWeather.gettmp());
         tvDescribe.setText(cityWeather.gettxt());
-        ivWindDirection.setImageResource(selectWeatherPic(cityWeather.getdir(), dayOrNight, false, false));
+        ivWindDirection.setImageResource(MainAssistUtils.getMainAssistUtils().selectWeatherPic(cityWeather.getdir(), dayOrNight, false, false));
         tvWindPower.setText(cityWeather.getsc() + "级");
         tvHumidity.setText(cityWeather.gethum() + "%");
         tvSendible.setText(cityWeather.getfl() + "℃");
@@ -638,17 +635,17 @@ public class MainActivity extends BaseFragmentActivity implements SwipeRefreshLa
                 .get(1).getMax_tem() + "℃");
         if (dayOrNight) {
             tvTodayDescribe.setText(forecastWeatherList.get(0).getTxt_d());
-            ivTodayDescribe.setImageResource(selectWeatherPic(forecastWeatherList.get(0).getTxt_d(),
+            ivTodayDescribe.setImageResource(MainAssistUtils.getMainAssistUtils().selectWeatherPic(forecastWeatherList.get(0).getTxt_d(),
                     dayOrNight, false, false));
             tvTomorrowDescribe.setText(forecastWeatherList.get(1).getTxt_d());
-            ivTdDescribe.setImageResource(selectWeatherPic(forecastWeatherList.get(1).getTxt_d(),
+            ivTdDescribe.setImageResource(MainAssistUtils.getMainAssistUtils().selectWeatherPic(forecastWeatherList.get(1).getTxt_d(),
                     dayOrNight, false, false));
         } else {
             tvTodayDescribe.setText(forecastWeatherList.get(0).getTxt_n());
-            ivTodayDescribe.setImageResource(selectWeatherPic(forecastWeatherList.get(0).getTxt_n(),
+            ivTodayDescribe.setImageResource(MainAssistUtils.getMainAssistUtils().selectWeatherPic(forecastWeatherList.get(0).getTxt_n(),
                     dayOrNight, false, false));
             tvTomorrowDescribe.setText(forecastWeatherList.get(1).getTxt_n());
-            ivTdDescribe.setImageResource(selectWeatherPic(forecastWeatherList.get(1).getTxt_n(),
+            ivTdDescribe.setImageResource(MainAssistUtils.getMainAssistUtils().selectWeatherPic(forecastWeatherList.get(1).getTxt_n(),
                     dayOrNight, false, false));
         }
         //设置日出日落动画参数
@@ -679,11 +676,11 @@ public class MainActivity extends BaseFragmentActivity implements SwipeRefreshLa
         tvTendencyFirstdayData.setText(forecastWeatherList.get(0).getDate().substring(5, 7) + "/" +
                 forecastWeatherList.get(0).getDate().substring(8, 10));
         tvTendencyFirstdayDDescribe.setText(forecastWeatherList.get(0).getTxt_d());
-        ivTendencyFirstdayDDescribe.setImageResource(selectWeatherPic(forecastWeatherList.get(0).getTxt_d()
+        ivTendencyFirstdayDDescribe.setImageResource(MainAssistUtils.getMainAssistUtils().selectWeatherPic(forecastWeatherList.get(0).getTxt_d()
                 , dayOrNight, false, false));
         tvFirstdayDTem.setText(forecastWeatherList.get(0).getMax_tem() + "°");
         tvFirstdayNTem.setText(forecastWeatherList.get(0).getMin_tem() + "°");
-        ivTendencyFirstdayNDescribe.setImageResource(selectWeatherPic(forecastWeatherList.get(0).getTxt_n()
+        ivTendencyFirstdayNDescribe.setImageResource(MainAssistUtils.getMainAssistUtils().selectWeatherPic(forecastWeatherList.get(0).getTxt_n()
                 , dayOrNight, false, false));
         tvTendencyFirstdayNDescribe.setText(forecastWeatherList.get(0).getTxt_n());
         tvTendencyFirstdayWindDirection.setText(forecastWeatherList.get(0).getDir());
@@ -692,11 +689,11 @@ public class MainActivity extends BaseFragmentActivity implements SwipeRefreshLa
         tvTendencySeconddayData.setText(forecastWeatherList.get(1).getDate().substring(5, 7) + "/" +
                 forecastWeatherList.get(1).getDate().substring(8, 10));
         tvTendencySeconddayDDescribe.setText(forecastWeatherList.get(1).getTxt_d());
-        ivTendencySeconddayDDescribe.setImageResource(selectWeatherPic(forecastWeatherList.get(1).getTxt_d
+        ivTendencySeconddayDDescribe.setImageResource(MainAssistUtils.getMainAssistUtils().selectWeatherPic(forecastWeatherList.get(1).getTxt_d
                 (), dayOrNight, false, false));
         tvSeconddayDTem.setText(forecastWeatherList.get(1).getMax_tem() + "°");
         tvSeconddayNTem.setText(forecastWeatherList.get(1).getMin_tem() + "°");
-        ivTendencySeconddayNDescribe.setImageResource(selectWeatherPic(forecastWeatherList.get(1).getTxt_n
+        ivTendencySeconddayNDescribe.setImageResource(MainAssistUtils.getMainAssistUtils().selectWeatherPic(forecastWeatherList.get(1).getTxt_n
                 (), dayOrNight, false, false));
         tvTendencySeconddayNDescribe.setText(forecastWeatherList.get(1).getTxt_n());
         tvTendencySeconddayWindDirection.setText(forecastWeatherList.get(1).getDir());
@@ -710,11 +707,11 @@ public class MainActivity extends BaseFragmentActivity implements SwipeRefreshLa
         tvTendencyThirddayData.setText(forecastWeatherList.get(2).getDate().substring(5, 7) + "/" +
                 forecastWeatherList.get(2).getDate().substring(8, 10));
         tvTendencyThirddayDDescribe.setText(forecastWeatherList.get(2).getTxt_d());
-        ivTendencyThirddayDDescribe.setImageResource(selectWeatherPic(forecastWeatherList.get(2).getTxt_d()
+        ivTendencyThirddayDDescribe.setImageResource(MainAssistUtils.getMainAssistUtils().selectWeatherPic(forecastWeatherList.get(2).getTxt_d()
                 , dayOrNight, false, false));
         tvThirddayDTem.setText(forecastWeatherList.get(2).getMax_tem() + "°");
         tvThirddayNTem.setText(forecastWeatherList.get(2).getMin_tem() + "°");
-        ivTendencyThirddayNDescribe.setImageResource(selectWeatherPic(forecastWeatherList.get(2).getTxt_n()
+        ivTendencyThirddayNDescribe.setImageResource(MainAssistUtils.getMainAssistUtils().selectWeatherPic(forecastWeatherList.get(2).getTxt_n()
                 , dayOrNight, false, false));
         tvTendencyThirddayNDescribe.setText(forecastWeatherList.get(2).getTxt_n());
         tvTendencyThirddayWindDirection.setText(forecastWeatherList.get(2).getDir());
@@ -728,11 +725,11 @@ public class MainActivity extends BaseFragmentActivity implements SwipeRefreshLa
         tvTendencyFourthdayData.setText(forecastWeatherList.get(3).getDate().substring(5, 7) + "/" +
                 forecastWeatherList.get(3).getDate().substring(8, 10));
         tvTendencyFourthdayDDescribe.setText(forecastWeatherList.get(3).getTxt_d());
-        ivTendencyFourthdayDDescribe.setImageResource(selectWeatherPic(forecastWeatherList.get(3).getTxt_d
+        ivTendencyFourthdayDDescribe.setImageResource(MainAssistUtils.getMainAssistUtils().selectWeatherPic(forecastWeatherList.get(3).getTxt_d
                 (), dayOrNight, false, false));
         tvFourthdayDTem.setText(forecastWeatherList.get(3).getMax_tem() + "°");
         tvFourthdayNTem.setText(forecastWeatherList.get(3).getMin_tem() + "°");
-        ivTendencyFourthdayNDescribe.setImageResource(selectWeatherPic(forecastWeatherList.get(3).getTxt_n
+        ivTendencyFourthdayNDescribe.setImageResource(MainAssistUtils.getMainAssistUtils().selectWeatherPic(forecastWeatherList.get(3).getTxt_n
                 (), dayOrNight, false, false));
         tvTendencyFourthdayNDescribe.setText(forecastWeatherList.get(3).getTxt_n());
         tvTendencyFourthdayWindDirection.setText(forecastWeatherList.get(3).getDir());
@@ -746,11 +743,11 @@ public class MainActivity extends BaseFragmentActivity implements SwipeRefreshLa
         tvTendencyFifthdayData.setText(forecastWeatherList.get(4).getDate().substring(5, 7) + "/" +
                 forecastWeatherList.get(4).getDate().substring(8, 10));
         tvTendencyFifthdayDDescribe.setText(forecastWeatherList.get(4).getTxt_d());
-        ivTendencyFifthdayDDescribe.setImageResource(selectWeatherPic(forecastWeatherList.get(4).getTxt_d()
+        ivTendencyFifthdayDDescribe.setImageResource(MainAssistUtils.getMainAssistUtils().selectWeatherPic(forecastWeatherList.get(4).getTxt_d()
                 , dayOrNight, false, false));
         tvFifthdayDTem.setText(forecastWeatherList.get(4).getMax_tem() + "°");
         tvFifthdayNTem.setText(forecastWeatherList.get(4).getMin_tem() + "°");
-        ivTendencyFifthdayNDescribe.setImageResource(selectWeatherPic(forecastWeatherList.get(4).getTxt_n()
+        ivTendencyFifthdayNDescribe.setImageResource(MainAssistUtils.getMainAssistUtils().selectWeatherPic(forecastWeatherList.get(4).getTxt_n()
                 , dayOrNight, false, false));
         tvTendencyFifthdayNDescribe.setText(forecastWeatherList.get(4).getTxt_n());
         tvTendencyFifthdayWindDirection.setText(forecastWeatherList.get(4).getDir());
@@ -764,11 +761,11 @@ public class MainActivity extends BaseFragmentActivity implements SwipeRefreshLa
         tvTendencySixthdayData.setText(forecastWeatherList.get(5).getDate().substring(5, 7) + "/" +
                 forecastWeatherList.get(5).getDate().substring(8, 10));
         tvTendencySixthdayDDescribe.setText(forecastWeatherList.get(5).getTxt_d());
-        ivTendencySixthdayDDescribe.setImageResource(selectWeatherPic(forecastWeatherList.get(5).getTxt_d()
+        ivTendencySixthdayDDescribe.setImageResource(MainAssistUtils.getMainAssistUtils().selectWeatherPic(forecastWeatherList.get(5).getTxt_d()
                 , dayOrNight, false, false));
         tvSixthdayDTem.setText(forecastWeatherList.get(5).getMax_tem() + "°");
         tvSixthdayNTem.setText(forecastWeatherList.get(5).getMin_tem() + "°");
-        ivTendencySixthdayNDescribe.setImageResource(selectWeatherPic(forecastWeatherList.get(5).getTxt_n()
+        ivTendencySixthdayNDescribe.setImageResource(MainAssistUtils.getMainAssistUtils().selectWeatherPic(forecastWeatherList.get(5).getTxt_n()
                 , dayOrNight, false, false));
         tvTendencySixthdayNDescribe.setText(forecastWeatherList.get(5).getTxt_n());
         tvTendencySixthdayWindDirection.setText(forecastWeatherList.get(5).getDir());
@@ -781,224 +778,8 @@ public class MainActivity extends BaseFragmentActivity implements SwipeRefreshLa
         tvUltravioletraysIndex.setText(cityWeather.getUv_brf());
         tvSportIndex.setText(cityWeather.getSport_brf());
 
-        setTemPointCoordinate();
-        selectWeatherPic(cityWeather.gettxt(), dayOrNight, false, true);   //根据天气信息切换背景图片
-    }
-
-    /**
-     * 设置趋势图中控件所在的位置
-     */
-    private void setTemPointCoordinate() {
-        int maxTemY = DensityUtils.dpTopx(mContext, 22);             //温度最高点的Y（相对其所在的viewgroup）
-        int minTemY = DensityUtils.dpTopx(mContext, 130 - 22 - 8);  //温度最低点的Y(圆点的高度为6)
-        //每个点的x坐标（相对其所在的viewgroup）
-        int intervalX = MyApplication.screenWidth / 12 - DensityUtils.dpTopx(mContext, 4);
-        //点所在的viewgroup相对其父控件的Y值
-        int topHight = mainRlFirstdayTendency.getTop();
-        //通过排序得出6天最高温度与最低温度
-        int[] hightTem = new int[]{Integer.valueOf(forecastWeatherList.get(0).getMax_tem()), Integer
-                .valueOf(forecastWeatherList.get(1).getMax_tem())
-                , Integer.valueOf(forecastWeatherList.get(2).getMax_tem()), Integer.valueOf
-                (forecastWeatherList.get(3).getMax_tem()),
-                Integer.valueOf(forecastWeatherList.get(4).getMax_tem()), Integer.valueOf
-                (forecastWeatherList.get(5).getMax_tem())};
-        int[] lowTem = new int[]{Integer.valueOf(forecastWeatherList.get(0).getMin_tem()), Integer.valueOf
-                (forecastWeatherList.get(1).getMin_tem())
-                , Integer.valueOf(forecastWeatherList.get(2).getMin_tem()), Integer.valueOf
-                (forecastWeatherList.get(3).getMin_tem()),
-                Integer.valueOf(forecastWeatherList.get(4).getMin_tem()), Integer.valueOf
-                (forecastWeatherList.get(5).getMin_tem())};
-        Arrays.sort(hightTem);
-        Arrays.sort(lowTem);
-        //先移除视图中动态添加的所有view
-        mainRlFirstdayTendency.removeAllViews();
-        rlSeconddayTendency.removeAllViews();
-        rlThirddayTendency.removeAllViews();
-        rlFourthdayTendency.removeAllViews();
-        rlFifthdayTendency.removeAllViews();
-        rlSixthdayTendency.removeAllViews();
-        for (int i = 0; i < 10; i++) {
-            mainLlForecastWeather.removeView(TemLines[i]);
-        }
-        //将温度点和温度值添加到相应的RelativeLayout中
-        int firstHightY = minTemY - (Integer.valueOf(forecastWeatherList.get(0).getMax_tem()) - lowTem[0])
-                * (minTemY - maxTemY) / (hightTem[5] - lowTem[0]);
-        setLayout(intervalX, firstHightY, true, 0, mContext);
-        int firstLowY = minTemY - (Integer.valueOf(forecastWeatherList.get(0).getMin_tem()) - lowTem[0]) *
-                (minTemY - maxTemY) / (hightTem[5] - lowTem[0]);
-        setLayout(intervalX, firstLowY, false, 0, mContext);
-
-        int secondHightY = minTemY - (Integer.valueOf(forecastWeatherList.get(1).getMax_tem()) - lowTem[0])
-                * (minTemY - maxTemY) / (hightTem[5] - lowTem[0]);
-        setLayout(intervalX, secondHightY, true, 1, mContext);
-        int secondLowY = minTemY - (Integer.valueOf(forecastWeatherList.get(1).getMin_tem()) - lowTem[0]) *
-                (minTemY - maxTemY) / (hightTem[5] - lowTem[0]);
-        setLayout(intervalX, secondLowY, false, 1, mContext);
-
-        int thirdHightY = minTemY - (Integer.valueOf(forecastWeatherList.get(2).getMax_tem()) - lowTem[0])
-                * (minTemY - maxTemY) / (hightTem[5] - lowTem[0]);
-        setLayout(intervalX, thirdHightY, true, 2, mContext);
-        int thirdLowY = minTemY - (Integer.valueOf(forecastWeatherList.get(2).getMin_tem()) - lowTem[0]) *
-                (minTemY - maxTemY) / (hightTem[5] - lowTem[0]);
-        setLayout(intervalX, thirdLowY, false, 2, mContext);
-
-        int fourthHightY = minTemY - (Integer.valueOf(forecastWeatherList.get(3).getMax_tem()) - lowTem[0])
-                * (minTemY - maxTemY) / (hightTem[5] - lowTem[0]);
-        setLayout(intervalX, fourthHightY, true, 3, mContext);
-        int fourthLowY = minTemY - (Integer.valueOf(forecastWeatherList.get(3).getMin_tem()) - lowTem[0]) *
-                (minTemY - maxTemY) / (hightTem[5] - lowTem[0]);
-        setLayout(intervalX, fourthLowY, false, 3, mContext);
-
-        int fifthHightY = minTemY - (Integer.valueOf(forecastWeatherList.get(4).getMax_tem()) - lowTem[0])
-                * (minTemY - maxTemY) / (hightTem[5] - lowTem[0]);
-        setLayout(intervalX, fifthHightY, true, 4, mContext);
-
-        int fifthLowY = minTemY - (Integer.valueOf(forecastWeatherList.get(4).getMin_tem()) - lowTem[0]) *
-                (minTemY - maxTemY) / (hightTem[5] - lowTem[0]);
-        setLayout(intervalX, fifthLowY, false, 4, mContext);
-
-        int sixthHightY = minTemY - (Integer.valueOf(forecastWeatherList.get(5).getMax_tem()) - lowTem[0])
-                * (minTemY - maxTemY) / (hightTem[5] - lowTem[0]);
-        setLayout(intervalX, sixthHightY, true, 5, mContext);
-
-        int sixthLowY = minTemY - (Integer.valueOf(forecastWeatherList.get(5).getMin_tem()) - lowTem[0]) *
-                (minTemY - maxTemY) / (hightTem[5] - lowTem[0]);
-        setLayout(intervalX, sixthLowY, false, 5, mContext);
-        //将直线添加到FrameLayout中（将点用直线连接起来）
-        int[] firstHightXY = new int[2];     //上面第一条线的起点
-        int[] firstLowXY = new int[2];       //下面第一条线的起点
-        int[] secondHightXY = new int[2];    //上面第二条线的起点（第一条线的终点）
-        int[] secondLowXY = new int[2];      //下面第二条线的起点（第一条线的终点）
-        int[] thridHightXY = new int[2];
-        int[] thridLowXY = new int[2];
-        int[] fourthHightXY = new int[2];
-        int[] fourthLowXY = new int[2];
-        int[] fifthHightXY = new int[2];
-        int[] fifthLowXY = new int[2];
-        int[] sixthHightXY = new int[2];
-        int[] sixthLowXY = new int[2];
-        firstHightXY[0] = intervalX + DensityUtils.dpTopx(mContext, 3);                //3为圆点的半径
-        firstHightXY[1] = firstHightY + topHight + DensityUtils.dpTopx(mContext, 7);   //7为圆点的半径 +
-        // RelativeLayout的paddingtop
-        secondHightXY[0] = firstHightXY[0] + MyApplication.screenWidth / 6;
-        secondHightXY[1] = secondHightY + topHight + DensityUtils.dpTopx(mContext, 7);
-        thridHightXY[0] = secondHightXY[0] + MyApplication.screenWidth / 6;
-        thridHightXY[1] = thirdHightY + topHight + DensityUtils.dpTopx(mContext, 7);
-        fourthHightXY[0] = thridHightXY[0] + MyApplication.screenWidth / 6;
-        fourthHightXY[1] = fourthHightY + topHight + DensityUtils.dpTopx(mContext, 7);
-        fifthHightXY[0] = fourthHightXY[0] + MyApplication.screenWidth / 6;
-        fifthHightXY[1] = fifthHightY + topHight + DensityUtils.dpTopx(mContext, 7);
-        sixthHightXY[0] = fifthHightXY[0] + MyApplication.screenWidth / 6;
-        sixthHightXY[1] = sixthHightY + topHight + DensityUtils.dpTopx(mContext, 7);
-
-        firstLowXY[0] = intervalX + DensityUtils.dpTopx(mContext, 3);                //3为圆点的半径
-        firstLowXY[1] = firstLowY + topHight + DensityUtils.dpTopx(mContext, 7);   //7为圆点的半径 +
-        // RelativeLayout的paddingtop
-        secondLowXY[0] = firstHightXY[0] + MyApplication.screenWidth / 6;
-        secondLowXY[1] = secondLowY + topHight + DensityUtils.dpTopx(mContext, 7);
-        thridLowXY[0] = secondHightXY[0] + MyApplication.screenWidth / 6;
-        thridLowXY[1] = thirdLowY + topHight + DensityUtils.dpTopx(mContext, 7);
-        fourthLowXY[0] = thridHightXY[0] + MyApplication.screenWidth / 6;
-        fourthLowXY[1] = fourthLowY + topHight + DensityUtils.dpTopx(mContext, 7);
-        fifthLowXY[0] = fourthHightXY[0] + MyApplication.screenWidth / 6;
-        fifthLowXY[1] = fifthLowY + topHight + DensityUtils.dpTopx(mContext, 7);
-        sixthLowXY[0] = fifthHightXY[0] + MyApplication.screenWidth / 6;
-        sixthLowXY[1] = sixthLowY + topHight + DensityUtils.dpTopx(mContext, 7);
-
-        TendencyLineView tendencyLineView1 = new TendencyLineView(mContext,
-                firstHightXY[0], firstHightXY[1], secondHightXY[0], secondHightXY[1], true);  //连接点的线
-        TendencyLineView tendencyLineView2 = new TendencyLineView(mContext,
-                secondHightXY[0], secondHightXY[1], thridHightXY[0], thridHightXY[1], true);  //连接点的线
-        TendencyLineView tendencyLineView3 = new TendencyLineView(mContext,
-                thridHightXY[0], thridHightXY[1], fourthHightXY[0], fourthHightXY[1], true);  //连接点的线
-        TendencyLineView tendencyLineView4 = new TendencyLineView(mContext,
-                fourthHightXY[0], fourthHightXY[1], fifthHightXY[0], fifthHightXY[1], true);  //连接点的线
-        TendencyLineView tendencyLineView5 = new TendencyLineView(mContext,
-                fifthHightXY[0], fifthHightXY[1], sixthHightXY[0], sixthHightXY[1], true);  //连接点的线
-
-        TendencyLineView tendencyLineView6 = new TendencyLineView(mContext,
-                firstLowXY[0], firstLowXY[1], secondLowXY[0], secondLowXY[1], false);  //连接点的线
-        TendencyLineView tendencyLineView7 = new TendencyLineView(mContext,
-                secondLowXY[0], secondLowXY[1], thridLowXY[0], thridLowXY[1], false);  //连接点的线
-        TendencyLineView tendencyLineView8 = new TendencyLineView(mContext,
-                thridLowXY[0], thridLowXY[1], fourthLowXY[0], fourthLowXY[1], false);  //连接点的线
-        TendencyLineView tendencyLineView9 = new TendencyLineView(mContext,
-                fourthLowXY[0], fourthLowXY[1], fifthLowXY[0], fifthLowXY[1], false);  //连接点的线
-        TendencyLineView tendencyLineView10 = new TendencyLineView(mContext,
-                fifthLowXY[0], fifthLowXY[1], sixthLowXY[0], sixthLowXY[1], false);  //连接点的线
-        //将创建的view添加到数组，便于刷新时清除
-        TemLines[0] = tendencyLineView1;
-        TemLines[1] = tendencyLineView2;
-        TemLines[2] = tendencyLineView3;
-        TemLines[3] = tendencyLineView4;
-        TemLines[4] = tendencyLineView5;
-        TemLines[5] = tendencyLineView6;
-        TemLines[6] = tendencyLineView7;
-        TemLines[7] = tendencyLineView8;
-        TemLines[8] = tendencyLineView9;
-        TemLines[9] = tendencyLineView10;
-        //将线添加到界面中
-        for (int i = 0; i < 10; i++) {
-            mainLlForecastWeather.addView(TemLines[i]);
-        }
-    }
-
-    /**
-     * 向界面中添加趋势图中的温度点和textview
-     */
-    private void setLayout(int x, int y, boolean dayOrNight, int index, Context mContext) {
-        View viewPoint = new View(mContext);          //点
-        TextView textView = new TextView(mContext);   //温度
-        textView.setTextColor(getResources().getColor(R.color.white));
-        textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 13);
-        textView.setGravity(Gravity.CENTER);
-        //先将view添加到指定的viewgroup中
-        switch (index) {
-            case 0:
-                mainRlFirstdayTendency.addView(viewPoint);
-                mainRlFirstdayTendency.addView(textView);
-                break;
-            case 1:
-                rlSeconddayTendency.addView(viewPoint);
-                rlSeconddayTendency.addView(textView);
-                break;
-            case 2:
-                rlThirddayTendency.addView(viewPoint);
-                rlThirddayTendency.addView(textView);
-                break;
-            case 3:
-                rlFourthdayTendency.addView(viewPoint);
-                rlFourthdayTendency.addView(textView);
-                break;
-            case 4:
-                rlFifthdayTendency.addView(viewPoint);
-                rlFifthdayTendency.addView(textView);
-                break;
-            case 5:
-                rlSixthdayTendency.addView(viewPoint);
-                rlSixthdayTendency.addView(textView);
-                break;
-        }
-        //设置view在指定viewgroup中的宽高及坐标
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-                DensityUtils.dpTopx(mContext, 6), DensityUtils.dpTopx(mContext, 6));
-        params.setMargins(x, y, 0, 0);    //通过自定义坐标来放置你的控件
-        viewPoint.setLayoutParams(params);
-
-        RelativeLayout.LayoutParams paramsTextView = new RelativeLayout.LayoutParams(
-                DensityUtils.dpTopx(mContext, 22), DensityUtils.dpTopx(mContext, 17));
-        if (dayOrNight) {
-            viewPoint.setBackgroundResource(R.drawable.shape_main_tendency_day);
-            paramsTextView.setMargins(x - DensityUtils.dpTopx(mContext, 7), y - DensityUtils.dpTopx
-                    (mContext, 19), 0, 0);    //通过自定义坐标来放置你的控件
-            textView.setText(forecastWeatherList.get(index).getMax_tem() + "°");
-        } else {
-            viewPoint.setBackgroundResource(R.drawable.shape_main_tendency_night);
-            paramsTextView.setMargins(x - DensityUtils.dpTopx(mContext, 7), y + DensityUtils.dpTopx
-                    (mContext, 8), 0, 0);    //通过自定义坐标来放置你的控件
-            textView.setText(forecastWeatherList.get(index).getMin_tem() + "°");
-        }
-        textView.setLayoutParams(paramsTextView);
+        MainAssistUtils.getMainAssistUtils().setTemPointCoordinate(forecastWeatherList,TemLines);
+        MainAssistUtils.getMainAssistUtils().selectWeatherPic(cityWeather.gettxt(), dayOrNight, false, true);   //根据天气信息切换背景图片
     }
 
     @OnClick({R.id.main_tv_tendency, R.id.main_tv_list, R.id.main_iv_menu,R.id.main_iv_avatar,
@@ -1175,7 +956,7 @@ public class MainActivity extends BaseFragmentActivity implements SwipeRefreshLa
                     //本地有数据，且第一次获取新数据失败时设置趋势图中温度点的坐标
                     if (!SharedPreferanceUtils.get(Constants.DefaultCity, "").equals("") &&
                             isSetViewCoordinate) {
-                        setTemPointCoordinate();
+                        MainAssistUtils.getMainAssistUtils().setTemPointCoordinate(forecastWeatherList,TemLines);
                     }
                     isSetViewCoordinate = false;
                 }
@@ -1222,245 +1003,7 @@ public class MainActivity extends BaseFragmentActivity implements SwipeRefreshLa
             return false;
         }
     };
-
-    /**
-     * 根据天气状态、空气质量返回对应的图标
-     *
-     * @param state           天气状态
-     * @param dayOrNight      白天或者夜晚，白天为true
-     * @param isFuzzy         是否模糊背景图片，true为模糊
-     * @param isSetBackGround 是否切换背景图片，true为设置
-     * @return
-     */
-    public int selectWeatherPic(String state, boolean dayOrNight, boolean isFuzzy, boolean isSetBackGround) {
-        int result = 0;
-        int background = 0;
-        switch (state) {
-            case "晴":
-                if (dayOrNight) {
-                    background = isFuzzy ? R.drawable.bg_fine_day_blur : R.drawable.bg_fine_day;
-                } else {
-                    background = isFuzzy ? R.drawable.bg_fine_night_blur : R.drawable.bg_fine_night;
-                }
-                result = dayOrNight ? R.drawable.notify_ic_sunny : R.drawable.notify_ic_nightsunny;
-                break;
-            case "多云":
-                if (dayOrNight) {
-                    background = isFuzzy ? R.drawable.bg_cloudy_day_blur : R.drawable.bg_cloudy_day;
-                } else {
-                    background = isFuzzy ? R.drawable.bg_cloudy_night_blur : R.drawable.bg_cloudy_night;
-                }
-                result = dayOrNight ? R.drawable.notify_ic_cloudy : R.drawable.notify_ic_nightcloudy;
-                break;
-            case "少云":
-                if (dayOrNight) {
-                    background = isFuzzy ? R.drawable.bg_cloudy_day_blur : R.drawable.bg_cloudy_day;
-                } else {
-                    background = isFuzzy ? R.drawable.bg_cloudy_night_blur : R.drawable.bg_cloudy_night;
-                }
-                result = dayOrNight ? R.drawable.notify_ic_cloudy : R.drawable.notify_ic_nightcloudy;
-                break;
-            case "晴间多云":
-                if (dayOrNight) {
-                    background = isFuzzy ? R.drawable.bg_cloudy_day_blur : R.drawable.bg_cloudy_day;
-                } else {
-                    background = isFuzzy ? R.drawable.bg_cloudy_night_blur : R.drawable.bg_cloudy_night;
-                }
-                result = dayOrNight ? R.drawable.notify_ic_cloudy : R.drawable.notify_ic_nightcloudy;
-                break;
-            case "阴":
-                background = isFuzzy ? R.drawable.bg_overcast_blur : R.drawable.bg_overcast;
-                result = R.drawable.notify_ic_overcast;
-                break;
-            case "阵雨":
-                background = isFuzzy ? R.drawable.bg_rain_blur : R.drawable.bg_rain;
-                result = dayOrNight ? R.drawable.notify_ic_shower : R.drawable.notify_ic_nightrain;
-                break;
-            case "强阵雨":
-                background = isFuzzy ? R.drawable.bg_rain_blur : R.drawable.bg_rain;
-                result = dayOrNight ? R.drawable.notify_ic_shower : R.drawable.notify_ic_nightrain;
-                break;
-            case "雷阵雨":
-                background = isFuzzy ? R.drawable.bg_thunder_storm : R.drawable.bg_thunder_storm;
-                result = R.drawable.notify_ic_thundeshower;
-                break;
-            case "强雷阵雨":
-                background = isFuzzy ? R.drawable.bg_thunder_storm : R.drawable.bg_thunder_storm;
-                result = R.drawable.notify_ic_thundeshower;
-                break;
-            case "雷阵雨伴有冰雹":
-                background = isFuzzy ? R.drawable.bg_thunder_storm : R.drawable.bg_thunder_storm;
-                result = R.drawable.notify_ic_thundeshowerhail;
-                break;
-            case "小雨":
-                background = isFuzzy ? R.drawable.bg_rain_blur : R.drawable.bg_rain;
-                result = R.drawable.notify_ic_lightrain;
-                break;
-            case "毛毛雨":
-                background = isFuzzy ? R.drawable.bg_rain_blur : R.drawable.bg_rain;
-                result = R.drawable.notify_ic_lightrain;
-                break;
-            case "中雨":
-                background = isFuzzy ? R.drawable.bg_rain_blur : R.drawable.bg_rain;
-                result = R.drawable.notify_ic_moderraterain;
-                break;
-            case "大雨":
-                background = isFuzzy ? R.drawable.bg_rain_blur : R.drawable.bg_rain;
-                result = R.drawable.notify_ic_moderraterain;
-                break;
-            case "极端降雨":
-                background = isFuzzy ? R.drawable.bg_rain_blur : R.drawable.bg_rain;
-                result = R.drawable.notify_ic_heavyrain;
-                break;
-            case "暴雨":
-                background = isFuzzy ? R.drawable.bg_rain_blur : R.drawable.bg_rain;
-                result = R.drawable.notify_ic_heavyrain;
-                break;
-            case "大暴雨":
-                background = isFuzzy ? R.drawable.bg_rain_blur : R.drawable.bg_rain;
-                result = R.drawable.notify_ic_heavyrain;
-                break;
-            case "特大暴雨":
-                background = isFuzzy ? R.drawable.bg_rain_blur : R.drawable.bg_rain;
-                result = R.drawable.notify_ic_heavyrain;
-                break;
-            case "冻雨":
-                background = isFuzzy ? R.drawable.bg_rain_blur : R.drawable.bg_rain;
-                result = R.drawable.notify_ic_sleet;
-                break;
-            case "阵雪":
-                if (dayOrNight) {
-                    background = isFuzzy ? R.drawable.bg_snow_blur : R.drawable.bg_snow;
-                } else {
-                    background = isFuzzy ? R.drawable.bg_snow_night_blur : R.drawable.bg_snow_night;
-                }
-                result = dayOrNight ? R.drawable.notify_ic_shower : R.drawable.notify_ic_nightsown;
-                break;
-            case "阵雨夹雪":
-                background = isFuzzy ? R.drawable.bg_rain_blur : R.drawable.bg_rain;
-                result = R.drawable.notify_ic_rainsnow;
-                break;
-            case "雨雪天气":
-                if (dayOrNight) {
-                    background = isFuzzy ? R.drawable.bg_snow_blur : R.drawable.bg_snow;
-                } else {
-                    background = isFuzzy ? R.drawable.bg_snow_night_blur : R.drawable.bg_snow_night;
-                }
-                result = R.drawable.notify_ic_rainsnow;
-                break;
-            case "雨夹雪":
-                background = isFuzzy ? R.drawable.bg_rain_blur : R.drawable.bg_rain;
-                result = R.drawable.notify_ic_rainsnow;
-                break;
-            case "小雪":
-                if (dayOrNight) {
-                    background = isFuzzy ? R.drawable.bg_snow_blur : R.drawable.bg_snow;
-                } else {
-                    background = isFuzzy ? R.drawable.bg_snow_night_blur : R.drawable.bg_snow_night;
-                }
-                result = R.drawable.notify_ic_lightsnow;
-                break;
-            case "中雪":
-                if (dayOrNight) {
-                    background = isFuzzy ? R.drawable.bg_snow_blur : R.drawable.bg_snow;
-                } else {
-                    background = isFuzzy ? R.drawable.bg_snow_night_blur : R.drawable.bg_snow_night;
-                }
-                result = R.drawable.notify_ic_lightsnow;
-                break;
-            case "大雪":
-                if (dayOrNight) {
-                    background = isFuzzy ? R.drawable.bg_snow_blur : R.drawable.bg_snow;
-                } else {
-                    background = isFuzzy ? R.drawable.bg_snow_night_blur : R.drawable.bg_snow_night;
-                }
-                result = R.drawable.notify_ic_heavysnow;
-                break;
-            case "暴雪":
-                if (dayOrNight) {
-                    background = isFuzzy ? R.drawable.bg_snow_blur : R.drawable.bg_snow;
-                } else {
-                    background = isFuzzy ? R.drawable.bg_snow_night_blur : R.drawable.bg_snow_night;
-                }
-                result = R.drawable.notify_ic_heavysnow;
-                break;
-            case "薄雾":
-                background = isFuzzy ? R.drawable.bg_fog_blur : R.drawable.bg_fog;
-                result = R.drawable.notify_ic_fog;
-                break;
-            case "雾":
-                background = isFuzzy ? R.drawable.bg_fog_blur : R.drawable.bg_fog;
-                result = R.drawable.notify_ic_fog;
-                break;
-            case "霾":
-                background = isFuzzy ? R.drawable.bg_haze_blur : R.drawable.bg_haze;
-                result = dayOrNight ? R.drawable.notify_ic_haze : R.drawable.notify_ic_nighthaze;
-                break;
-            case "扬沙":
-                background = isFuzzy ? R.drawable.bg_sand_storm_blur : R.drawable.bg_sand_storm;
-                result = R.drawable.notify_ic_dust;
-                break;
-            case "浮尘":
-                background = isFuzzy ? R.drawable.bg_sand_storm_blur : R.drawable.bg_sand_storm;
-                result = R.drawable.notify_ic_dust;
-                break;
-            case "沙尘暴":
-                background = isFuzzy ? R.drawable.bg_sand_storm_blur : R.drawable.bg_sand_storm;
-                result = R.drawable.notify_ic_sandstorm;
-                break;
-            case "强沙尘暴":
-                background = isFuzzy ? R.drawable.bg_sand_storm_blur : R.drawable.bg_sand_storm;
-                result = R.drawable.notify_ic_sandstorm;
-                break;
-            case "优":
-                result = R.drawable.ic_pm25_01;
-                break;
-            case "良":
-                result = R.drawable.ic_pm25_02;
-                break;
-            case "轻度污染":
-                result = R.drawable.ic_pm25_03;
-                break;
-            case "中度污染":
-                result = R.drawable.ic_pm25_04;
-                break;
-            case "重度污染":
-                result = R.drawable.ic_pm25_05;
-                break;
-            case "东风":
-                result = R.drawable.ic_main_wind_e;
-                break;
-            case "西风":
-                result = R.drawable.ic_main_wind_w;
-                break;
-            case "南风":
-                result = R.drawable.ic_main_wind_s;
-                break;
-            case "北风":
-                result = R.drawable.ic_main_wind_n;
-                break;
-            case "东北风":
-                result = R.drawable.ic_main_wind_en;
-                break;
-            case "西北风":
-                result = R.drawable.ic_main_wind_wn;
-                break;
-            case "西南风":
-                result = R.drawable.ic_main_wind_ws;
-                break;
-            case "东南风":
-                result = R.drawable.ic_main_wind_es;
-                break;
-            default:   //未知
-                background = isFuzzy ? R.drawable.bg_na_blur : R.drawable.bg_na;
-                result = R.drawable.notify_ic_default;
-                break;
-        }
-        if (isSetBackGround) {
-            ivBackground.setImageResource(background);
-        }
-        return result;
-    }
+    
 
     /**
      * 计时每隔5秒切换一次气压风力等数据

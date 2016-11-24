@@ -7,10 +7,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.xingruyu.weather.MyApplication;
 import com.xingruyu.weather.R;
 import com.xingruyu.weather.base.MyBaseAdapter;
 import com.xingruyu.weather.bean.ForecastWeather;
+import com.xingruyu.weather.utils.MainAssistUtils;
 
 import java.util.Calendar;
 import java.util.List;
@@ -63,7 +63,7 @@ public class ForecastWeatherAdapter extends MyBaseAdapter<ForecastWeather>{
         }
         viewHolder.item_forecast_weather_tv_temperature.setText(forecastWeather.getMin_tem()+"~"+forecastWeather.getMax_tem()+"℃");
         viewHolder.item_forecast_weather_iv_describe.setImageResource(
-                MyApplication.getMyApplication().getMainActivity().selectWeatherPic(forecastWeather.getTxt_d(),true,false,false));
+                MainAssistUtils.getMainAssistUtils().selectWeatherPic(forecastWeather.getTxt_d(),true,false,false));
         return convertView;
     }
 

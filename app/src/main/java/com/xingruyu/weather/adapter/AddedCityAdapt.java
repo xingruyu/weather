@@ -11,6 +11,7 @@ import com.xingruyu.weather.MyApplication;
 import com.xingruyu.weather.R;
 import com.xingruyu.weather.base.MyBaseAdapter;
 import com.xingruyu.weather.bean.CityWeather;
+import com.xingruyu.weather.utils.MainAssistUtils;
 
 import java.util.Calendar;
 import java.util.List;
@@ -56,7 +57,7 @@ public class AddedCityAdapt extends MyBaseAdapter<CityWeather>{
         viewHolder.item_added_city_tv_temperature.setText(cityWeather.getForecastWeatherList().get(0).getMin_tem()
         +"~"+cityWeather.getForecastWeatherList().get(0).getMax_tem()+"℃");
         viewHolder.item_added_city_iv_describe.setImageResource(
-                MyApplication.getMyApplication().getMainActivity().selectWeatherPic(cityWeather.gettxt(),
+                MainAssistUtils.getMainAssistUtils().selectWeatherPic(cityWeather.gettxt(),
                         dayOrNight,false,false));
         if (position == defaultCityIndx){
             viewHolder.item_added_city_tv_city.setTextColor(MyApplication.mContext.getResources().getColor(R.color.cornflowerblue));

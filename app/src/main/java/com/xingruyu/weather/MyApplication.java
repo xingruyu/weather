@@ -22,7 +22,7 @@ public class MyApplication extends Application {
     private static MyApplication myApplication;
     public static Context mContext;
 
-    private MainActivity mainActivity;          //主界面对象
+    public MainActivity mainActivity;          //主界面对象
     private LocationInfo locationInfo;             //位置信息(每次定位成功后更新)
     public static List<CityWeather> cityWeatherList;     //城市天气列表，与数据库保持一致
     public static LocationClient mLocationClient;   //百度定位

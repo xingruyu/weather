@@ -5,8 +5,8 @@
     <color name="colorAccent">#FF4081</color>
 
     <color name="translucence">#80000000</color><!--主界面的透明度-->
-    <color name="translucence_dark">#c0000000</color><!--深透明-->
-    <color name="translucence_shallow">#40000000</color><!--浅透明-->
+    <color name="translucence_dark">#e0000000</color><!--深透明-->
+    <color name="translucence_shallow">#20000000</color><!--浅透明-->
     <color name="translucence_totle">#00000000</color><!--完全透明-->
 
     <!--网上收集的颜色-->

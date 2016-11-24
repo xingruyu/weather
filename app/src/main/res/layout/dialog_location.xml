@@ -9,7 +9,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/dialog_locating"
-        android:layout_marginTop="@dimen/margin_big"
+        android:layout_marginTop="@dimen/margin_bigger"
         android:layout_gravity="center"/>
 
     <TextView
@@ -17,9 +17,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="@dimen/textsize_norm"
-        android:layout_marginTop="@dimen/margin_big"
-        android:layout_marginBottom="@dimen/margin_big"
+        android:layout_marginTop="@dimen/margin_small"
+        android:layout_marginBottom="@dimen/margin_small"
         android:layout_gravity="center"
+        android:padding="@dimen/padding_bigger"
         android:text="正在定位……"/>
 
     <Button
