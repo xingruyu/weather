@@ -452,10 +452,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/margin_norm"
-                            android:paddingRight="@dimen/padding_norm"
-                            android:paddingLeft="@dimen/padding_big"
-                            android:paddingTop="@dimen/margin_norm"
-                            android:paddingBottom="@dimen/margin_norm"
+                            android:padding="@dimen/padding_norm"
                             android:background="@color/translucence"
                             android:orientation="horizontal">
 
@@ -468,8 +465,7 @@
                                     android:id="@+id/main_sv_sunrise_sunset"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
-                                    android:layout_marginRight="20dp"
-                                    android:layout_marginLeft="8dp">
+                                    android:layout_marginRight="8dp">
                                 </com.xingruyu.weather.view.SunriseSunsetView>
 
                                 <LinearLayout

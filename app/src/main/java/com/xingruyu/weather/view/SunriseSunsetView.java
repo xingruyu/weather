@@ -65,7 +65,7 @@ public class SunriseSunsetView extends View{
         canvas.drawBitmap(bitmap,coords[0],coords[1], paint);
         bitmap.recycle();
         //绘制底部直线
-        canvas.drawLine(14,getHeight()/2,getWidth()-14,getHeight()/2,paint);
+        canvas.drawLine(15,getHeight()/2,getWidth()-15,getHeight()/2,paint);
         //定义太阳运动的轨迹（直接用圆弧的轨迹会有较大的偏差，不清楚为什么）
         RectF rectF1 = new RectF(5, 0, getWidth()-50, getHeight()-50);
         Path path1 = new Path();

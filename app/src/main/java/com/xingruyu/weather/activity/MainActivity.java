@@ -5,7 +5,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -30,6 +32,12 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.tencent.connect.share.QQShare;
+import com.tencent.mm.sdk.openapi.IWXAPI;
+import com.tencent.mm.sdk.openapi.WXAPIFactory;
+import com.tencent.tauth.IUiListener;
+import com.tencent.tauth.Tencent;
+import com.tencent.tauth.UiError;
 import com.xingruyu.weather.MyApplication;
 import com.xingruyu.weather.MyLocationListener;
 import com.xingruyu.weather.R;
@@ -48,6 +56,7 @@ import com.xingruyu.weather.utils.NetUtils;
 import com.xingruyu.weather.utils.ScreenUtils;
 import com.xingruyu.weather.utils.SharedPreferanceUtils;
 import com.xingruyu.weather.utils.StatusBarUtil;
+import com.xingruyu.weather.utils.WXUtil;
 import com.xingruyu.weather.view.CircleImageView;
 import com.xingruyu.weather.view.ObserveScrollView;
 import com.xingruyu.weather.view.SunriseSunsetView;
@@ -390,6 +399,8 @@ public class MainActivity extends BaseFragmentActivity implements SwipeRefreshLa
     private GestureDetector mGestureDetector;    //手势检测器
     private UpdateViewReceiver updateViewReceiver;
     private Handler handler;
+    private IWXAPI iwxapi;
+    private Tencent mTencent;
 
     private String[] dayOfWeek = new String[]{"周日", "周一", "周二", "周三", "周四", "周五", "周六"};
     private AddedCityAdapt addedCityAdapt;    //侧边栏城市列表的适配器
@@ -397,9 +408,9 @@ public class MainActivity extends BaseFragmentActivity implements SwipeRefreshLa
     private List<ForecastWeather> forecastWeatherList;   //未来6天的天气
     private CityWeather cityWeather;       //当前天气
 
-    View[] TemLines = new View[10];   //趋势图中温度点间的连线
+    View[] TemLines = new View[10];        //趋势图中温度点间的连线
     private boolean mSunAnim = true;       //是否重新播放太阳升起落下动画
-//    private boolean isUpdate = false;  //是否为更新数据
+//    private boolean isUpdate = false;   //是否为更新数据
     private boolean dayOrNight = true;     //当前时间是白天还是夜晚，true为白天
     private boolean isRefreshByLocation = false;    //是否根据定位结果更新天气
     private boolean isSetViewCoordinate = true;    //是否设置趋势图各点的坐标
@@ -581,6 +592,11 @@ public class MainActivity extends BaseFragmentActivity implements SwipeRefreshLa
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) mainrl2.getLayoutParams();
         params.height = ScreenUtils.forceGetViewSize(mainrl1)[1] ;
         mainrl2.setLayoutParams(params);
+
+        //将应用注册到微信
+        iwxapi = WXAPIFactory.createWXAPI(this, Constants.WX_APP_ID,true);
+        iwxapi.registerApp(Constants.WX_APP_ID);
+        mTencent = Tencent.createInstance(Constants.QQ_APP_ID, this.getApplicationContext());
     }
 
     /**
@@ -783,7 +799,7 @@ public class MainActivity extends BaseFragmentActivity implements SwipeRefreshLa
     }
 
     @OnClick({R.id.main_tv_tendency, R.id.main_tv_list, R.id.main_iv_menu,R.id.main_iv_avatar,
-    R.id.main_iv_addcity,R.id.main_iv_deletecity})
+    R.id.main_iv_addcity,R.id.main_iv_deletecity,R.id.main_iv_share})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.main_tv_tendency:
@@ -810,6 +826,82 @@ public class MainActivity extends BaseFragmentActivity implements SwipeRefreshLa
                 startActivity(intent);
                 break;
             case R.id.main_iv_deletecity:
+                break;
+            case R.id.main_iv_share:
+                //截屏
+                final Bitmap bitmap = ScreenUtils.snapShotWithStatusBar(this);
+
+                SimpleDateFormat sDateFormat = new SimpleDateFormat("MM-dd");
+                String date = sDateFormat.format(new java.util.Date());
+                final String content = "今天"+date+"，"+cityWeather.getDistrict()+"，"+
+                        cityWeather.gettxt()+"，"+forecastWeatherList.get(0).getMin_tem()+
+                        "~"+forecastWeatherList.get(0).getMax_tem()+"℃，当前温度"+
+                        cityWeather.gettmp()+"℃。——四季天";
+
+                //显示分享对话框
+                final Dialog dialog = new Dialog(MainActivity.this);
+                View shareView = getLayoutInflater().inflate(R.layout.dialog_share_weather,null,false);
+                (shareView.findViewById(R.id.dialog_share_wxfriend)).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (!iwxapi.isWXAppInstalled()) {
+                            ToastShowShot("您还未安装微信客户端!");
+                            return;
+                        }
+                        WXUtil.share(bitmap,iwxapi,true);
+                        dialog.cancel();
+                    }
+                });
+                (shareView.findViewById(R.id.dialog_share_wxgroup)).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (!iwxapi.isWXAppInstalled()) {
+                            ToastShowShot("您还未安装微信客户端!");
+                            return;
+                        }
+                        WXUtil.share(bitmap,iwxapi,false);
+                        dialog.cancel();
+                    }
+                });
+                (shareView.findViewById(R.id.dialog_share_qq)).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        final Bundle params = new Bundle();
+                        params.putInt(QQShare.SHARE_TO_QQ_KEY_TYPE, QQShare.SHARE_TO_QQ_TYPE_DEFAULT);
+                        params.putString(QQShare.SHARE_TO_QQ_TITLE, "四季天");
+                        params.putString(QQShare.SHARE_TO_QQ_SUMMARY,  content);
+                        params.putString(QQShare.SHARE_TO_QQ_TARGET_URL,  "www.baidu.com");
+                        params.putString(QQShare.SHARE_TO_QQ_APP_NAME,  "四季天");
+                        mTencent.shareToQQ(MainActivity.this, params, new IUiListener() {
+                                    @Override
+                                    public void onComplete(Object o) {
+                                    }
+
+                                    @Override
+                                    public void onError(UiError uiError) {
+                                    }
+
+                                    @Override
+                                    public void onCancel() {
+                                    }
+                                });
+                        dialog.cancel();
+                    }
+                });
+                (shareView.findViewById(R.id.dialog_share_sms)).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:"));
+                        intent.putExtra("sms_body", content);
+                        startActivity(intent);
+                        dialog.cancel();
+                    }
+                });
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.setCanceledOnTouchOutside(true);
+                dialog.setCancelable(true);
+                dialog.setContentView(shareView);
+                dialog.show();
                 break;
         }
     }

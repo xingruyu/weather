@@ -31,8 +31,6 @@ public class MyApplication extends Application {
     public static int screenWidth = 0;
     public static int screenHeight = 0;
 
-//    private DBHelper mDBHelper;
-
     public MyApplication() {
         super();
     }
