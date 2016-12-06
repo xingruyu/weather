@@ -111,10 +111,17 @@ public class GetCityWeather {
             JSONArray jsonArray = (new JSONObject(resultJSON)).getJSONArray("HeWeather5");
             JSONObject jsonObject = jsonArray.getJSONObject(0);
 
-            JSONObject aqiJSON = jsonObject.getJSONObject("aqi").getJSONObject("city");
-            cityWeather.setAqi(aqiJSON.getString("aqi"));
-            cityWeather.setPm25(aqiJSON.getString("pm25"));
-            cityWeather.setQlty(aqiJSON.getString("qlty"));
+            //免费的api就是不爽
+            if (jsonObject.has("aqi")){
+                JSONObject aqiJSON = jsonObject.getJSONObject("aqi").getJSONObject("city");
+                cityWeather.setAqi(aqiJSON.getString("aqi"));
+                cityWeather.setPm25(aqiJSON.getString("pm25"));
+                cityWeather.setQlty(aqiJSON.getString("qlty"));
+            }else {
+                cityWeather.setAqi("0");
+                cityWeather.setPm25("");
+                cityWeather.setQlty("优");
+            }
 
             JSONObject basicJSON = jsonObject.getJSONObject("basic");
             cityWeather.setId(basicJSON.getString("id"));
@@ -144,7 +151,7 @@ public class GetCityWeather {
             cityWeather.setsc(windJSON.getString("sc"));
             cityWeather.setspd(windJSON.getString("spd"));
 
-            //暂时不清楚为啥有的地区没有suggestion
+            //免费的api就是不爽
             if (jsonObject.has("suggestion")) {
                 JSONObject suggestionJSON = jsonObject.getJSONObject("suggestion");
                 JSONObject comfJSON = suggestionJSON.getJSONObject("comf");

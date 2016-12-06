@@ -753,8 +753,8 @@
 
                                     <ImageView
                                         android:id="@+id/main_iv_tendency_firstday_d_describe"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
+                                        android:layout_width="30dp"
+                                        android:layout_height="30dp"
                                         android:layout_below="@+id/main_tv_tendency_firstday_d_describe"
                                         android:layout_marginTop="@dimen/margin_small"
                                         android:layout_marginBottom="@dimen/margin_small"
@@ -763,8 +763,8 @@
 
                                     <ImageView
                                         android:id="@+id/main_iv_tendency_firstday_n_describe"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
+                                        android:layout_width="30dp"
+                                        android:layout_height="30dp"
                                         android:layout_below="@+id/main_rl_firstday_tendency"
                                         android:layout_marginTop="@dimen/margin_small"
                                         android:layout_marginBottom="@dimen/margin_small"
@@ -897,8 +897,8 @@
 
                                     <ImageView
                                         android:id="@+id/main_iv_tendency_secondday_d_describe"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
+                                        android:layout_width="30dp"
+                                        android:layout_height="30dp"
                                         android:layout_below="@+id/main_tv_tendency_secondday_d_describe"
                                         android:layout_marginTop="@dimen/margin_small"
                                         android:layout_marginBottom="@dimen/margin_small"
@@ -954,8 +954,8 @@
 
                                     <ImageView
                                         android:id="@+id/main_iv_tendency_secondday_n_describe"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
+                                        android:layout_width="30dp"
+                                        android:layout_height="30dp"
                                         android:layout_below="@+id/main_rl_secondday_tendency"
                                         android:layout_marginTop="@dimen/margin_small"
                                         android:layout_marginBottom="@dimen/margin_small"
@@ -1041,8 +1041,8 @@
 
                                     <ImageView
                                         android:id="@+id/main_iv_tendency_thirdday_d_describe"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
+                                        android:layout_width="30dp"
+                                        android:layout_height="30dp"
                                         android:layout_below="@+id/main_tv_tendency_thirdday_d_describe"
                                         android:layout_marginTop="@dimen/margin_small"
                                         android:layout_marginBottom="@dimen/margin_small"
@@ -1100,8 +1100,8 @@
 
                                     <ImageView
                                         android:id="@+id/main_iv_tendency_thirdday_n_describe"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
+                                        android:layout_width="30dp"
+                                        android:layout_height="30dp"
                                         android:layout_below="@+id/main_rl_thirdday_tendency"
                                         android:layout_marginTop="@dimen/margin_small"
                                         android:layout_marginBottom="@dimen/margin_small"
@@ -1187,8 +1187,8 @@
 
                                     <ImageView
                                         android:id="@+id/main_iv_tendency_fourthday_d_describe"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
+                                        android:layout_width="30dp"
+                                        android:layout_height="30dp"
                                         android:layout_below="@+id/main_tv_tendency_fourthday_d_describe"
                                         android:layout_marginTop="@dimen/margin_small"
                                         android:layout_marginBottom="@dimen/margin_small"
@@ -1246,8 +1246,8 @@
 
                                     <ImageView
                                         android:id="@+id/main_iv_tendency_fourthday_n_describe"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
+                                        android:layout_width="30dp"
+                                        android:layout_height="30dp"
                                         android:layout_below="@+id/main_rl_fourthday_tendency"
                                         android:layout_marginTop="@dimen/margin_small"
                                         android:layout_marginBottom="@dimen/margin_small"
@@ -1333,8 +1333,8 @@
 
                                     <ImageView
                                         android:id="@+id/main_iv_tendency_fifthday_d_describe"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
+                                        android:layout_width="30dp"
+                                        android:layout_height="30dp"
                                         android:layout_below="@+id/main_tv_tendency_fifthday_d_describe"
                                         android:layout_marginTop="@dimen/margin_small"
                                         android:layout_marginBottom="@dimen/margin_small"
@@ -1392,8 +1392,8 @@
 
                                     <ImageView
                                         android:id="@+id/main_iv_tendency_fifthday_n_describe"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
+                                        android:layout_width="30dp"
+                                        android:layout_height="30dp"
                                         android:layout_below="@+id/main_rl_fifthday_tendency"
                                         android:layout_marginTop="@dimen/margin_small"
                                         android:layout_marginBottom="@dimen/margin_small"
@@ -1479,8 +1479,8 @@
 
                                     <ImageView
                                         android:id="@+id/main_iv_tendency_sixthday_d_describe"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
+                                        android:layout_width="30dp"
+                                        android:layout_height="30dp"
                                         android:layout_below="@+id/main_tv_tendency_sixthday_d_describe"
                                         android:layout_marginTop="@dimen/margin_small"
                                         android:layout_marginBottom="@dimen/margin_small"
@@ -1539,8 +1539,8 @@
 
                                     <ImageView
                                         android:id="@+id/main_iv_tendency_sixthday_n_describe"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
+                                        android:layout_width="30dp"
+                                        android:layout_height="30dp"
                                         android:layout_below="@+id/main_rl_sixthday_tendency"
                                         android:layout_marginTop="@dimen/margin_small"
                                         android:layout_marginBottom="@dimen/margin_small"
@@ -1889,7 +1889,7 @@
                 android:layout_below="@+id/main_iv_avatar"
                 android:layout_marginTop="@dimen/margin_norm"
                 android:layout_marginBottom="@dimen/margin_norm"
-                android:text="十乘三"/>
+                android:text="姬十三"/>
         </RelativeLayout>
 
         <View

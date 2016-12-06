@@ -28,7 +28,7 @@ public class BaseFragmentActivity extends FragmentActivity {
         // 添加Activity到堆栈
         AppManagerUtils.getAppManager().addActivity(this);
 
-        mContext = getApplicationContext();
+        mContext = this;
         mActivity = this;
         progressDialog = new ProgressDialog(this);
         progressDialog.setCancelable(false);

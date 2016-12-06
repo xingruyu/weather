@@ -1,8 +1,9 @@
 package com.xingruyu.weather.utils;
 
-import android.animation.Keyframe;
+import android.animation.Animator;
+import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.animation.PropertyValuesHolder;
+import android.animation.TimeInterpolator;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.util.TypedValue;
@@ -10,7 +11,6 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -22,10 +22,11 @@ import com.xingruyu.weather.view.TendencyLineView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Random;
 
 import static com.xingruyu.weather.MyApplication.mContext;
-import static com.xingruyu.weather.MyApplication.screenWidth;
 
 /**
  * 主界面辅助类，主要是一些动画及view的创建
@@ -34,9 +35,16 @@ import static com.xingruyu.weather.MyApplication.screenWidth;
 
 public class MainAssistUtils {
 
-    private static List<ImageView> imageViewList = new ArrayList<>();;
+    private static List<ImageView> IVList = new ArrayList<>();
+    private static List<ObjectAnimator> OAList = new ArrayList<>();
 
     private static MainAssistUtils instance;
+    private static boolean dayOrNight = true;   //true为白天
+    private static String states = "";   //天气状态
+    private static int WRAP = ViewGroup.LayoutParams.WRAP_CONTENT;
+    private static int WIDTH = MyApplication.screenWidth;
+    private static int HIGTH = MyApplication.screenHeight;
+    private static Random random = new Random();    //产生随机数
 
     private MainAssistUtils() {
     }
@@ -53,69 +61,167 @@ public class MainAssistUtils {
 
     /**
      * 设置天气动画
-     *
+     * 注意：动画的暂停与启动（上滑、锁屏，进入后台、从别的界面返回）
      * @param mainRlAnimator
      * @param state 天气状态
      */
-    public static void setAnimator(FrameLayout mainRlAnimator, String state, Context mContext) {
+    public static void setAnimator(RelativeLayout mainRlAnimator, String state, Context mContext) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());  //System.currentTimeMillis()取得系统时间
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        if (states.equals(state)){    //与上次的天气状态一样
+            if ((hour > 18 || hour < 6) && dayOrNight) {  //判断是否要切换白天与夜晚的动画
+                dayOrNight = false;
+            }else if (hour >=6 && hour <=18 && !dayOrNight){
+                dayOrNight = true;
+            } else {   //不需要更新天气动画
+                return;
+            }
+        }else {
+            if (hour > 18 || hour < 6) {   //判断是否要切换白天与夜晚的动画
+                dayOrNight = false;
+            }else {
+                dayOrNight = true;
+            }
+        }
+        states = state;
         mainRlAnimator.removeAllViews();    //清除所有动画
-        imageViewList.clear();
+        IVList.clear();
+        OAList.clear();
         switch (state) {
             case "晴":
-                for (int i=0;i<4;i++){
-                    imageViewList.add(new ImageView(mContext));
-                    mainRlAnimator.addView(imageViewList.get(i));
+                int num = dayOrNight ? 4 : 3;
+                for (int i=0;i<num;i++){
+                    IVList.add(new ImageView(mContext));
+                    mainRlAnimator.addView(IVList.get(i));
                 }
-                imageViewList.get(0).setImageResource(R.drawable.sunshine_1);
-                imageViewList.get(1).setImageResource(R.drawable.sunshine_2);
-                imageViewList.get(2).setImageResource(R.drawable.sunshine_3);
-                imageViewList.get(3).setImageResource(R.drawable.fire_balloon);
-                RelativeLayout.LayoutParams param0 = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT
-                        , ViewGroup.LayoutParams.WRAP_CONTENT);
-                param0.setMargins(screenWidth/5,0,0,0);
-                imageViewList.get(0).setLayoutParams(param0);
-                RelativeLayout.LayoutParams param1 = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT
-                        , ViewGroup.LayoutParams.WRAP_CONTENT);
-                param1.setMargins(0,0,0,0);
-                imageViewList.get(1).setLayoutParams(param1);
-                RelativeLayout.LayoutParams param2 = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT
-                        , ViewGroup.LayoutParams.WRAP_CONTENT);
-                param2.setMargins(0,DensityUtils.dpTopx(mContext,50),0,0);
-                imageViewList.get(2).setLayoutParams(param2);
-                //热气球曲线运动
-                PropertyValuesHolder pvhX = PropertyValuesHolder.ofFloat("x", screenWidth/3,screenWidth/2);   // 属性1
-                // 属性2的三个关键帧
-                Keyframe kf0 = Keyframe.ofFloat(0f, screenWidth/2);
-                Keyframe kf1 = Keyframe.ofFloat(.5f, screenWidth/3);
-                Keyframe kf2 = Keyframe.ofFloat(1f, screenWidth/4);
-                // 用三个关键帧构造PropertyValuesHolder对象
-                PropertyValuesHolder pvhY = PropertyValuesHolder.ofKeyframe("y", kf0, kf1, kf2);    // 属性2
-                // 再用两个PropertyValuesHolder对象构造一个ObjectAnimator对象
-                ObjectAnimator objectAnimatorfine = ObjectAnimator.ofPropertyValuesHolder(imageViewList.get(3), pvhX, pvhY);
-                objectAnimatorfine.setDuration(18000);
-                objectAnimatorfine.setRepeatCount(999);
-                objectAnimatorfine.setRepeatMode(ValueAnimator.REVERSE);     //结束后反方向执行
-                objectAnimatorfine.setInterpolator(new LinearInterpolator());//匀速
-                objectAnimatorfine.start();
-
+                if (dayOrNight){
+                    IVList.get(0).setImageResource(R.drawable.sunshine_1);
+                    IVList.get(1).setImageResource(R.drawable.sunshine_2);
+                    IVList.get(2).setImageResource(R.drawable.sunshine_3);
+                    IVList.get(3).setImageResource(R.drawable.fire_balloon);
+                    //第一条阳光
+                    setLayoutParams(WRAP,WRAP,true, WIDTH/7,0 ,IVList.get(0));
+                    OAList.add(ObjectAnimator.ofFloat(IVList.get(0),"alpha",1,0.3f));
+                    setAnimatiorParams(OAList.get(0),999,1800,ValueAnimator.REVERSE,new LinearInterpolator());
+                    OAList.get(0).start();
+                    //第二条阳光
+                    setLayoutParams(WRAP,WRAP,true, 0,0 ,IVList.get(1));
+                    OAList.add(ObjectAnimator.ofFloat(IVList.get(1),"alpha",0.3f,1));
+                    setAnimatiorParams(OAList.get(1),999,2200,ValueAnimator.REVERSE,new LinearInterpolator());
+                    OAList.get(1).start();
+                    //第三条阳光
+                    setLayoutParams(WRAP,WRAP,true,0,DensityUtils.dpTopx(mContext,50) ,IVList.get(2));
+                    OAList.add(ObjectAnimator.ofFloat(IVList.get(2),"alpha",1,0.3f));
+                    setAnimatiorParams(OAList.get(2),999,2000,ValueAnimator.REVERSE,new LinearInterpolator());
+                    OAList.get(2).start();
+                    //热气球
+                    setLayoutParams(WIDTH/6,WIDTH/6,false,0,0,IVList.get(3));
+                    //热气球X方向平移动画
+                    OAList.add(ObjectAnimator.ofFloat(IVList.get(3),"translationX",WIDTH/2,WIDTH*2/3));
+                    setAnimatiorParams(OAList.get(3),999,0,ValueAnimator.REVERSE,new LinearInterpolator());
+                    //热气球Y方向平移动画
+                    OAList.add(ObjectAnimator.ofFloat(IVList.get(3),"translationY", WIDTH*2/3,WIDTH/2));
+                    setAnimatiorParams(OAList.get(4),999,0,ValueAnimator.REVERSE,new LinearInterpolator());
+                    //热气球XY方向缩放动画
+                    OAList.add(ObjectAnimator.ofFloat(IVList.get(3),"scaleX",1,0.7f));
+                    setAnimatiorParams(OAList.get(5),999,0,ValueAnimator.REVERSE,new LinearInterpolator());
+                    OAList.add(ObjectAnimator.ofFloat(IVList.get(3),"scaleY",1,0.7f));
+                    setAnimatiorParams(OAList.get(6),999,0,ValueAnimator.REVERSE,new LinearInterpolator());
+                    //组合XY方向的动画
+                    AnimatorSet animatorSet = new AnimatorSet();
+                    animatorSet.playTogether(OAList.get(3),OAList.get(4),OAList.get(5),OAList.get(6));
+                    animatorSet.setDuration(12000);
+                    animatorSet.start();
+                }else {
+                    for (int i=0;i<3;i++){
+                        setLayoutParams(WRAP,WRAP,true,-WIDTH/4,-WIDTH/4 ,IVList.get(i));
+                        AnimatorSet animatorSet = new AnimatorSet();
+                        if (i == 0){
+                            IVList.get(0).setImageResource(R.drawable.meteor);
+                            IVList.get(0).setRotation(-135);  //逆时针旋转135度
+                            OAList.add(ObjectAnimator.ofFloat(IVList.get(i),"translationX",WIDTH/5,WIDTH*4));
+                            OAList.add(ObjectAnimator.ofFloat(IVList.get(i),"translationY",HIGTH/5,HIGTH*2+WIDTH));
+                            animatorSet.setDuration(3800);
+                        }else if (i == 1){
+                            IVList.get(1).setImageResource(R.drawable.star_meteor);
+                            IVList.get(1).setRotation(-90);  //逆时针旋转90度
+                            OAList.add(ObjectAnimator.ofFloat(IVList.get(i),"translationX",-WIDTH*2-WIDTH,WIDTH*4));
+                            OAList.add(ObjectAnimator.ofFloat(IVList.get(i),"translationY",-HIGTH-WIDTH,HIGTH*2+WIDTH));
+                            animatorSet.setDuration(4700);
+                        }else {
+                            IVList.get(2).setImageResource(R.drawable.star_meteor_small);
+                            IVList.get(2).setRotation(-90);  //逆时针旋转90度
+                            OAList.add(ObjectAnimator.ofFloat(IVList.get(i),"translationX",-WIDTH/4,WIDTH*4));
+                            OAList.add(ObjectAnimator.ofFloat(IVList.get(i),"translationY",-WIDTH/4,HIGTH*2+WIDTH));
+                            animatorSet.setDuration(3000);
+                            animatorSet.setStartDelay(800);
+                        }
+                        setAnimatiorParams(OAList.get(i*2),999,0,ValueAnimator.RESTART,new LinearInterpolator());
+                        setAnimatiorParams(OAList.get(i*2+1),999,0,ValueAnimator.RESTART,new LinearInterpolator());
+                        //组合XY方向的动画
+                        animatorSet.playTogether(OAList.get(i*2),OAList.get(i*2+1));
+                        animatorSet.start();
+                    }
+                }
                 break;
             case "多云":
-
+                int num1 = dayOrNight ? 4 : 2;
+                for (int i=0;i<num1;i++){
+                    IVList.add(new ImageView(mContext));
+                    mainRlAnimator.addView(IVList.get(i));
+                }
+                cloudyAnimator();
                 break;
             case "少云":
-
+                int num2 = dayOrNight ? 4 : 2;
+                for (int i=0;i<num2;i++){
+                    IVList.add(new ImageView(mContext));
+                    mainRlAnimator.addView(IVList.get(i));
+                }
+                cloudyAnimator();
                 break;
             case "晴间多云":
-
+                int num3 = dayOrNight ? 4 : 2;
+                for (int i=0;i<num3;i++){
+                    IVList.add(new ImageView(mContext));
+                    mainRlAnimator.addView(IVList.get(i));
+                }
+                cloudyAnimator();
                 break;
             case "阴":
-
+                IVList.add(new ImageView(mContext));
+                mainRlAnimator.addView(IVList.get(0));
+                IVList.get(0).setImageResource(R.drawable.overcast_cloud);
+                setLayoutParams(WRAP,WRAP,true, 0,HIGTH/3 ,IVList.get(0));
+                ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(IVList.get(0),"translationX",
+                        -ScreenUtils.forceGetViewSize(IVList.get(0))[0]*9/10,WIDTH);
+                setAnimatiorParams(objectAnimator,999,65000,ValueAnimator.RESTART,new LinearInterpolator());
+                objectAnimator.start();
                 break;
             case "阵雨":
-
+                for (int i=0;i<150;i++){
+                    IVList.add(new ImageView(mContext));
+                    mainRlAnimator.addView(IVList.get(i));
+                    if (random.nextInt(2) == 0){
+                        IVList.get(i).setImageResource(R.drawable.raindrop_s);
+                    }else {
+                        IVList.get(i).setImageResource(R.drawable.raindrop_l);
+                    }
+                }
+                rainAnimator();
                 break;
             case "强阵雨":
-
+                for (int i=0;i<150;i++){
+                    IVList.add(new ImageView(mContext));
+                    mainRlAnimator.addView(IVList.get(i));
+                    if (random.nextInt(2) == 0){
+                        IVList.get(i).setImageResource(R.drawable.raindrop_s);
+                    }else {
+                        IVList.get(i).setImageResource(R.drawable.raindrop_l);
+                    }
+                }
+                rainAnimator();
                 break;
             case "雷阵雨":
 
@@ -127,28 +233,100 @@ public class MainAssistUtils {
 
                 break;
             case "小雨":
-
+                for (int i=0;i<150;i++){
+                    IVList.add(new ImageView(mContext));
+                    mainRlAnimator.addView(IVList.get(i));
+                    if (random.nextInt(2) == 0){
+                        IVList.get(i).setImageResource(R.drawable.raindrop_s);
+                    }else {
+                        IVList.get(i).setImageResource(R.drawable.raindrop_l);
+                    }
+                }
+                rainAnimator();
                 break;
             case "毛毛雨":
-
+                for (int i=0;i<150;i++){
+                    IVList.add(new ImageView(mContext));
+                    mainRlAnimator.addView(IVList.get(i));
+                    if (random.nextInt(2) == 0){
+                        IVList.get(i).setImageResource(R.drawable.raindrop_s);
+                    }else {
+                        IVList.get(i).setImageResource(R.drawable.raindrop_l);
+                    }
+                }
+                rainAnimator();
                 break;
             case "中雨":
-
+                for (int i=0;i<150;i++){
+                    IVList.add(new ImageView(mContext));
+                    mainRlAnimator.addView(IVList.get(i));
+                    if (random.nextInt(2) == 0){
+                        IVList.get(i).setImageResource(R.drawable.raindrop_m);
+                    }else {
+                        IVList.get(i).setImageResource(R.drawable.raindrop_xl);
+                    }
+                }
+                rainAnimator();
                 break;
             case "大雨":
-
+                for (int i=0;i<150;i++){
+                    IVList.add(new ImageView(mContext));
+                    mainRlAnimator.addView(IVList.get(i));
+                    if (random.nextInt(2) == 0){
+                        IVList.get(i).setImageResource(R.drawable.raindrop_m);
+                    }else {
+                        IVList.get(i).setImageResource(R.drawable.raindrop_xl);
+                    }
+                }
+                rainAnimator();
                 break;
             case "极端降雨":
-
+                for (int i=0;i<150;i++){
+                    IVList.add(new ImageView(mContext));
+                    mainRlAnimator.addView(IVList.get(i));
+                    if (random.nextInt(2) == 0){
+                        IVList.get(i).setImageResource(R.drawable.rain_large);
+                    }else {
+                        IVList.get(i).setImageResource(R.drawable.raindrop_xl);
+                    }
+                }
+                rainAnimator();
                 break;
             case "暴雨":
-
+                for (int i=0;i<150;i++){
+                    IVList.add(new ImageView(mContext));
+                    mainRlAnimator.addView(IVList.get(i));
+                    if (random.nextInt(2) == 0){
+                        IVList.get(i).setImageResource(R.drawable.rain_large);
+                    }else {
+                        IVList.get(i).setImageResource(R.drawable.raindrop_xl);
+                    }
+                }
+                rainAnimator();
                 break;
             case "大暴雨":
-
+                for (int i=0;i<150;i++){
+                    IVList.add(new ImageView(mContext));
+                    mainRlAnimator.addView(IVList.get(i));
+                    if (random.nextInt(2) == 0){
+                        IVList.get(i).setImageResource(R.drawable.rain_large);
+                    }else {
+                        IVList.get(i).setImageResource(R.drawable.raindrop_xl);
+                    }
+                }
+                rainAnimator();
                 break;
             case "特大暴雨":
-
+                for (int i=0;i<150;i++){
+                    IVList.add(new ImageView(mContext));
+                    mainRlAnimator.addView(IVList.get(i));
+                    if (random.nextInt(2) == 0){
+                        IVList.get(i).setImageResource(R.drawable.rain_large);
+                    }else {
+                        IVList.get(i).setImageResource(R.drawable.raindrop_xl);
+                    }
+                }
+                rainAnimator();
                 break;
             case "冻雨":
 
@@ -207,6 +385,174 @@ public class MainAssistUtils {
     }
 
     /**
+     * 设置多云动画
+     */
+    private static void cloudyAnimator(){
+        if (dayOrNight){
+            IVList.get(0).setImageResource(R.drawable.cloudy_day_1);
+            IVList.get(1).setImageResource(R.drawable.cloudy_day_2);
+            IVList.get(2).setImageResource(R.drawable.cloudy_day_3);
+            IVList.get(3).setImageResource(R.drawable.cloudy_day_4);
+            //第一条云
+            setLayoutParams(WRAP,WRAP,true, 0,0 ,IVList.get(0));
+            OAList.add(ObjectAnimator.ofFloat(IVList.get(0),"translationX",
+                    -ScreenUtils.forceGetViewSize(IVList.get(0))[0]*3/4,WIDTH));
+            setAnimatiorParams(OAList.get(0),999,65000,ValueAnimator.RESTART,new LinearInterpolator());
+            OAList.get(0).start();
+            //第二条云
+            setLayoutParams(WRAP,WRAP,true, 0,DensityUtils.dpTopx(mContext,100) ,IVList.get(1));
+            OAList.add(ObjectAnimator.ofFloat(IVList.get(1),"translationX", 0 ,WIDTH));
+            setAnimatiorParams(OAList.get(1),0,45000,ValueAnimator.RESTART,new LinearInterpolator());
+            OAList.get(1).addListener(new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationStart(Animator animation) {
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    OAList.set(1,(ObjectAnimator.ofFloat(IVList.get(1),"translationX",
+                            -ScreenUtils.forceGetViewSize(IVList.get(1))[0]*7/10 ,WIDTH)));
+                    setAnimatiorParams(OAList.get(1),999,55000,ValueAnimator.RESTART,new LinearInterpolator());
+                    OAList.get(1).start();
+                }
+
+                @Override
+                public void onAnimationCancel(Animator animation) {
+                }
+
+                @Override
+                public void onAnimationRepeat(Animator animation) {
+                }
+            });
+            OAList.get(1).start();
+            //第三条云
+            setLayoutParams(WRAP,WRAP,true, 0,HIGTH/2 ,IVList.get(2));
+            OAList.add(ObjectAnimator.ofFloat(IVList.get(2),"translationX",
+                    -ScreenUtils.forceGetViewSize(IVList.get(2))[0]*3/5,WIDTH));
+            setAnimatiorParams(OAList.get(2),999,74000,ValueAnimator.RESTART,new LinearInterpolator());
+            OAList.get(2).start();
+            //第四条云
+            setLayoutParams(WRAP,WRAP,true, 0,HIGTH/2 ,IVList.get(3));
+            OAList.add(ObjectAnimator.ofFloat(IVList.get(3),"translationX",
+                    -ScreenUtils.forceGetViewSize(IVList.get(3))[0]*3/5,WIDTH));
+            setAnimatiorParams(OAList.get(3),999,74000,ValueAnimator.RESTART,new LinearInterpolator());
+            OAList.get(3).start();
+        }else {
+            IVList.get(0).setImageResource(R.drawable.cloudy_night1);
+            IVList.get(1).setImageResource(R.drawable.cloudy_night2);
+            //第一条云
+            setLayoutParams(WRAP,WRAP,true,0,DensityUtils.dpTopx(mContext,35) ,IVList.get(0));
+            OAList.add(ObjectAnimator.ofFloat(IVList.get(0),"translationX", 0,WIDTH));
+            setAnimatiorParams(OAList.get(0),0,50000,ValueAnimator.RESTART,new LinearInterpolator());
+            OAList.get(0).addListener(new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationStart(Animator animation) {
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    OAList.set(0,ObjectAnimator.ofFloat(IVList.get(0),"translationX",
+                            -ScreenUtils.forceGetViewSize(IVList.get(0))[0]*9/10,WIDTH));
+                    setAnimatiorParams(OAList.get(0),999,65000,ValueAnimator.RESTART,new LinearInterpolator());
+                    OAList.get(0).start();
+                }
+
+                @Override
+                public void onAnimationCancel(Animator animation) {
+                }
+
+                @Override
+                public void onAnimationRepeat(Animator animation) {
+                }
+            });
+            OAList.get(0).start();
+            //第二条云
+            setLayoutParams(WRAP,WRAP,true,0,HIGTH/2 ,IVList.get(1));
+            OAList.add(ObjectAnimator.ofFloat(IVList.get(1),"translationX",
+                    -ScreenUtils.forceGetViewSize(IVList.get(1))[0]*4/5,WIDTH));
+            setAnimatiorParams(OAList.get(1),999,60000,ValueAnimator.RESTART,new LinearInterpolator());
+            OAList.get(1).start();
+        }
+    }
+
+    /**
+     * 设置雨动画
+     * 雨滴下落速度为1，动画持续时间=距离
+     */
+    private static void rainAnimator(){
+        for (int i=0;i<30;i++){
+            int y = random.nextInt(HIGTH/5)-HIGTH/5;
+            setLayoutParams(WRAP,WRAP,true,random.nextInt(WIDTH),y,IVList.get(i));
+            ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(IVList.get(i),"translationY",y,HIGTH-y);
+            setAnimatiorParams(objectAnimator,9999,HIGTH-y*2,ValueAnimator.RESTART,new LinearInterpolator());
+            objectAnimator.start();
+        }
+        for (int i=30;i<60;i++){
+            int y = random.nextInt(HIGTH/5)-HIGTH*2/5;
+            setLayoutParams(WRAP,WRAP,true,random.nextInt(WIDTH),y,IVList.get(i));
+            ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(IVList.get(i),"translationY",y,HIGTH-y);
+            setAnimatiorParams(objectAnimator,9999,HIGTH-y*2,ValueAnimator.RESTART,new LinearInterpolator());
+            objectAnimator.start();
+        }
+        for (int i=60;i<90;i++){
+            int y = random.nextInt(HIGTH/5)-HIGTH*3/5;
+            setLayoutParams(WRAP,WRAP,true,random.nextInt(WIDTH),y,IVList.get(i));
+            ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(IVList.get(i),"translationY",y,HIGTH-y);
+            setAnimatiorParams(objectAnimator,9999,HIGTH-y*2,ValueAnimator.RESTART,new LinearInterpolator());
+            objectAnimator.start();
+        }
+        for (int i=90;i<120;i++){
+            int y = random.nextInt(HIGTH/5)-HIGTH*4/5;
+            setLayoutParams(WRAP,WRAP,true,random.nextInt(WIDTH),y,IVList.get(i));
+            ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(IVList.get(i),"translationY",y,HIGTH-y);
+            setAnimatiorParams(objectAnimator,9999,HIGTH-y*2,ValueAnimator.RESTART,new LinearInterpolator());
+            objectAnimator.start();
+        }
+        for (int i=120;i<150;i++){
+            int y = random.nextInt(HIGTH/5)-HIGTH;
+            setLayoutParams(WRAP,WRAP,true,random.nextInt(WIDTH),y,IVList.get(i));
+            ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(IVList.get(i),"translationY",y,HIGTH-y);
+            setAnimatiorParams(objectAnimator,9999,HIGTH-y*2,ValueAnimator.RESTART,new LinearInterpolator());
+            objectAnimator.start();
+        }
+    }
+
+    /**
+     * 设置动画参数
+     * @param objectAnimator
+     * @param count
+     * @param time
+     * @param mode
+     * @param timeInterpolator
+     */
+    private static void setAnimatiorParams(ObjectAnimator objectAnimator, int count, int time,
+                   int mode, TimeInterpolator timeInterpolator){
+        objectAnimator.setRepeatCount(count);
+        objectAnimator.setRepeatMode(mode);
+        if (time != 0){
+            objectAnimator.setDuration(time);
+        }
+        objectAnimator.setInterpolator(timeInterpolator);
+    }
+
+    /**
+     * 设置view的宽高及x,y坐标
+     * @param width
+     * @param hight
+     * @param setXY 是否设置x,y坐标
+     * @param x
+     * @param y
+     * @param view
+     */
+    private static void setLayoutParams(int width,int hight,boolean setXY,int x,int y,View view){
+        RelativeLayout.LayoutParams param = new RelativeLayout.LayoutParams(width, hight);
+        if (setXY){
+            param.setMargins(x,y,0,0);
+        }
+        view.setLayoutParams(param);
+    }
+
+    /**
      * 根据天气状态、空气质量返回对应的图标
      * @param state           天气状态
      * @param dayOrNight      白天或者夜晚，白天为true
@@ -230,7 +576,7 @@ public class MainAssistUtils {
                 if (dayOrNight) {
                     background = isFuzzy ? R.drawable.bg_cloudy_day_blur : R.drawable.bg_cloudy_day;
                 } else {
-                    background = isFuzzy ? R.drawable.bg_cloudy_night_blur : R.drawable.bg_cloudy_night;
+                    background = isFuzzy ? R.drawable.bg_fine_night_blur : R.drawable.bg_fine_night;
                 }
                 result = dayOrNight ? R.drawable.notify_ic_cloudy : R.drawable.notify_ic_nightcloudy;
                 break;
@@ -238,7 +584,7 @@ public class MainAssistUtils {
                 if (dayOrNight) {
                     background = isFuzzy ? R.drawable.bg_cloudy_day_blur : R.drawable.bg_cloudy_day;
                 } else {
-                    background = isFuzzy ? R.drawable.bg_cloudy_night_blur : R.drawable.bg_cloudy_night;
+                    background = isFuzzy ? R.drawable.bg_fine_night_blur : R.drawable.bg_fine_night;
                 }
                 result = dayOrNight ? R.drawable.notify_ic_cloudy : R.drawable.notify_ic_nightcloudy;
                 break;
@@ -246,7 +592,7 @@ public class MainAssistUtils {
                 if (dayOrNight) {
                     background = isFuzzy ? R.drawable.bg_cloudy_day_blur : R.drawable.bg_cloudy_day;
                 } else {
-                    background = isFuzzy ? R.drawable.bg_cloudy_night_blur : R.drawable.bg_cloudy_night;
+                    background = isFuzzy ? R.drawable.bg_fine_night_blur : R.drawable.bg_fine_night;
                 }
                 result = dayOrNight ? R.drawable.notify_ic_cloudy : R.drawable.notify_ic_nightcloudy;
                 break;
@@ -451,7 +797,7 @@ public class MainAssistUtils {
         int maxTemY = DensityUtils.dpTopx(mContext, 22);             //温度最高点的Y（相对其所在的viewgroup）
         int minTemY = DensityUtils.dpTopx(mContext, 130 - 22 - 8);  //温度最低点的Y(圆点的高度为6)
         //每个点的x坐标（相对其所在的viewgroup）
-        int intervalX = MyApplication.screenWidth / 12 - DensityUtils.dpTopx(mContext, 4);
+        int intervalX = WIDTH / 12 - DensityUtils.dpTopx(mContext, 4);
         //点所在的viewgroup相对其父控件的Y值
         int topHight = MyApplication.getMyApplication().getMainActivity().mainRlFirstdayTendency.getTop();
         //通过排序得出6天最高温度与最低温度
@@ -539,29 +885,29 @@ public class MainAssistUtils {
         firstHightXY[0] = intervalX + DensityUtils.dpTopx(mContext, 3);                //3为圆点的半径
         firstHightXY[1] = firstHightY + topHight + DensityUtils.dpTopx(mContext, 7);   //7为圆点的半径 +
         // RelativeLayout的paddingtop
-        secondHightXY[0] = firstHightXY[0] + MyApplication.screenWidth / 6;
+        secondHightXY[0] = firstHightXY[0] + WIDTH / 6;
         secondHightXY[1] = secondHightY + topHight + DensityUtils.dpTopx(mContext, 7);
-        thridHightXY[0] = secondHightXY[0] + MyApplication.screenWidth / 6;
+        thridHightXY[0] = secondHightXY[0] + WIDTH / 6;
         thridHightXY[1] = thirdHightY + topHight + DensityUtils.dpTopx(mContext, 7);
-        fourthHightXY[0] = thridHightXY[0] + MyApplication.screenWidth / 6;
+        fourthHightXY[0] = thridHightXY[0] + WIDTH / 6;
         fourthHightXY[1] = fourthHightY + topHight + DensityUtils.dpTopx(mContext, 7);
-        fifthHightXY[0] = fourthHightXY[0] + MyApplication.screenWidth / 6;
+        fifthHightXY[0] = fourthHightXY[0] + WIDTH / 6;
         fifthHightXY[1] = fifthHightY + topHight + DensityUtils.dpTopx(mContext, 7);
-        sixthHightXY[0] = fifthHightXY[0] + MyApplication.screenWidth / 6;
+        sixthHightXY[0] = fifthHightXY[0] + WIDTH / 6;
         sixthHightXY[1] = sixthHightY + topHight + DensityUtils.dpTopx(mContext, 7);
 
         firstLowXY[0] = intervalX + DensityUtils.dpTopx(mContext, 3);                //3为圆点的半径
         firstLowXY[1] = firstLowY + topHight + DensityUtils.dpTopx(mContext, 7);   //7为圆点的半径 +
         // RelativeLayout的paddingtop
-        secondLowXY[0] = firstHightXY[0] + MyApplication.screenWidth / 6;
+        secondLowXY[0] = firstHightXY[0] + WIDTH / 6;
         secondLowXY[1] = secondLowY + topHight + DensityUtils.dpTopx(mContext, 7);
-        thridLowXY[0] = secondHightXY[0] + MyApplication.screenWidth / 6;
+        thridLowXY[0] = secondHightXY[0] + WIDTH / 6;
         thridLowXY[1] = thirdLowY + topHight + DensityUtils.dpTopx(mContext, 7);
-        fourthLowXY[0] = thridHightXY[0] + MyApplication.screenWidth / 6;
+        fourthLowXY[0] = thridHightXY[0] + WIDTH / 6;
         fourthLowXY[1] = fourthLowY + topHight + DensityUtils.dpTopx(mContext, 7);
-        fifthLowXY[0] = fourthHightXY[0] + MyApplication.screenWidth / 6;
+        fifthLowXY[0] = fourthHightXY[0] + WIDTH / 6;
         fifthLowXY[1] = fifthLowY + topHight + DensityUtils.dpTopx(mContext, 7);
-        sixthLowXY[0] = fifthHightXY[0] + MyApplication.screenWidth / 6;
+        sixthLowXY[0] = fifthHightXY[0] + WIDTH / 6;
         sixthLowXY[1] = sixthLowY + topHight + DensityUtils.dpTopx(mContext, 7);
 
         TendencyLineView tendencyLineView1 = new TendencyLineView(mContext,

@@ -796,6 +796,7 @@ public class MainActivity extends BaseFragmentActivity implements SwipeRefreshLa
 
         MainAssistUtils.getMainAssistUtils().setTemPointCoordinate(forecastWeatherList,TemLines);
         MainAssistUtils.getMainAssistUtils().selectWeatherPic(cityWeather.gettxt(), dayOrNight, false, true);   //根据天气信息切换背景图片
+        MainAssistUtils.setAnimator(mainRlAnimator,cityWeather.gettxt(),mContext);
     }
 
     @OnClick({R.id.main_tv_tendency, R.id.main_tv_list, R.id.main_iv_menu,R.id.main_iv_avatar,
@@ -1051,6 +1052,7 @@ public class MainActivity extends BaseFragmentActivity implements SwipeRefreshLa
                         MainAssistUtils.getMainAssistUtils().setTemPointCoordinate(forecastWeatherList,TemLines);
                     }
                     isSetViewCoordinate = false;
+                    mainSrlUpdate.setRefreshing(false);
                 }
             } else if (intent.getAction().equals(Constants.LOCATION_STATE) && isRefreshByLocation) {
                 isRefreshByLocation = false;
